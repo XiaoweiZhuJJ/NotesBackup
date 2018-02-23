@@ -1165,7 +1165,7 @@ git init
 git add LINE
 git commit -m "LINE commit"
 git remote add origin https://github.com/XiaoweiZhuJJ/RetroSOM.git
-git push -u origin master
+git push origin master
 # account XiaoweiZhuJJ # # Pass gh#5#5 #
 ```
 
