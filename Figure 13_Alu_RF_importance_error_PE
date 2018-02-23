@@ -1,0 +1,136 @@
+### Alu training ###
+
+plus01<- read.table("/home/xwzhu/Platium/hg38/NA12879/retro_v42_1/NA12879.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus02<- read.table("/home/xwzhu/Platium/hg38/NA12881/retro_v42_1/NA12881.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus03<- read.table("/home/xwzhu/Platium/hg38/NA12883/retro_v42_1/NA12883.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus04<- read.table("/home/xwzhu/Platium/hg38/NA12884/retro_v42_1/NA12884.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus05<- read.table("/home/xwzhu/Platium/hg38/NA12885/retro_v42_1/NA12885.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus06<- read.table("/home/xwzhu/Platium/hg38/NA12886/retro_v42_1/NA12886.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus07<- read.table("/home/xwzhu/Platium/hg38/NA12887/retro_v42_1/NA12887.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus08<- read.table("/home/xwzhu/Platium/hg38/NA12888/retro_v42_1/NA12888.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus09<- read.table("/home/xwzhu/Platium/hg38/NA12893/retro_v42_1/NA12893.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus10<- read.table("/home/xwzhu/Platium/hg38/NA12882/retro_v42_1/NA12882.pe.ALU.matrix.pAT", sep="\t", header=T)
+plus11<- read.table("/home/xwzhu/Platium/hg38/NA12880/retro_v42_1/NA12880.pe.ALU.matrix.pAT", sep="\t", header=T)
+
+minus01<- read.table("/home/xwzhu/Platium/hg38/NA12879/retro_v42_0/NA12879.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus02<- read.table("/home/xwzhu/Platium/hg38/NA12881/retro_v42_0/NA12881.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus03<- read.table("/home/xwzhu/Platium/hg38/NA12883/retro_v42_0/NA12883.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus04<- read.table("/home/xwzhu/Platium/hg38/NA12884/retro_v42_0/NA12884.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus05<- read.table("/home/xwzhu/Platium/hg38/NA12885/retro_v42_0/NA12885.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus06<- read.table("/home/xwzhu/Platium/hg38/NA12886/retro_v42_0/NA12886.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus07<- read.table("/home/xwzhu/Platium/hg38/NA12887/retro_v42_0/NA12887.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus08<- read.table("/home/xwzhu/Platium/hg38/NA12888/retro_v42_0/NA12888.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus09<- read.table("/home/xwzhu/Platium/hg38/NA12893/retro_v42_0/NA12893.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus10<- read.table("/home/xwzhu/Platium/hg38/NA12882/retro_v42_0/NA12882.pe.ALU.matrix.pAT", sep="\t", header=T)
+minus11<- read.table("/home/xwzhu/Platium/hg38/NA12880/retro_v42_0/NA12880.pe.ALU.matrix.pAT", sep="\t", header=T)
+
+dat01 <- rbind(plus01, minus01)
+dat02 <- rbind(plus02, minus02)
+dat03 <- rbind(plus03, minus03)
+dat04 <- rbind(plus04, minus04)
+dat05 <- rbind(plus05, minus05)
+dat06 <- rbind(plus06, minus06)
+dat07 <- rbind(plus07, minus07)
+dat08 <- rbind(plus08, minus08)
+dat09 <- rbind(plus09, minus09)
+dat10 <- rbind(plus10, minus10)
+dat11 <- rbind(plus11, minus11)
+
+subdata01 <- subset(dat01, (dat01[,7] == 1 | dat01[,8] == 1) & ref == 0)
+subdata02 <- subset(dat02, (dat02[,7] == 1 | dat02[,8] == 1) & ref == 0)
+subdata03 <- subset(dat03, (dat03[,7] == 1 | dat03[,8] == 1) & ref == 0)
+subdata04 <- subset(dat04, (dat04[,7] == 1 | dat04[,8] == 1) & ref == 0)
+subdata05 <- subset(dat05, (dat05[,7] == 1 | dat05[,8] == 1) & ref == 0)
+subdata06 <- subset(dat06, (dat06[,7] == 1 | dat06[,8] == 1) & ref == 0)
+subdata07 <- subset(dat07, (dat07[,7] == 1 | dat07[,8] == 1) & ref == 0)
+subdata08 <- subset(dat08, (dat08[,7] == 1 | dat08[,8] == 1) & ref == 0)
+subdata09 <- subset(dat09, (dat09[,7] == 1 | dat09[,8] == 1) & ref == 0)
+subdata10 <- subset(dat10, (dat10[,7] == 1 | dat10[,8] == 1) & ref == 0)
+subdata11 <- subset(dat11, (dat11[,7] == 1 | dat11[,8] == 1) & ref == 0)
+
+test01 <-cbind(subdata01, rep(1, dim(subdata01)[1]))
+test02 <-cbind(subdata02, rep(2, dim(subdata02)[1]))
+test03 <-cbind(subdata03, rep(3, dim(subdata03)[1]))
+test04 <-cbind(subdata04, rep(4, dim(subdata04)[1]))
+test05 <-cbind(subdata05, rep(5, dim(subdata05)[1]))
+test06 <-cbind(subdata06, rep(6, dim(subdata06)[1]))
+test07 <-cbind(subdata07, rep(7, dim(subdata07)[1]))
+test08 <-cbind(subdata08, rep(8, dim(subdata08)[1]))
+test09 <-cbind(subdata09, rep(9, dim(subdata09)[1]))
+test10 <-cbind(subdata10, rep(10, dim(subdata10)[1]))
+test11 <-cbind(subdata11, rep(11, dim(subdata11)[1]))
+
+
+name <- names(dat02)
+colnames(test01) <- c(name, "ID")
+colnames(test02) <- c(name, "ID")
+colnames(test03) <- c(name, "ID")
+colnames(test04) <- c(name, "ID")
+colnames(test05) <- c(name, "ID")
+colnames(test06) <- c(name, "ID")
+colnames(test07) <- c(name, "ID")
+colnames(test08) <- c(name, "ID")
+colnames(test09) <- c(name, "ID")
+colnames(test10) <- c(name, "ID")
+colnames(test11) <- c(name, "ID")
+
+total <- rbind(test01, test02, test03, test04, test05, test06, test07, test08, test09, test10, test11)
+total$gap <- total$gap/(abs(total$refpos1 - total$refpos2))
+
+library('randomForest')
+library('PRROC')
+library('DMwR')
+library('inTrees')
+library('xtable')
+
+trainG <- total
+subTrain <- trainG[,c("pos", "seg", "map", "anchor_align", "anchor_len", "anchor_mm", "anchor_XS", "anchor_AS", "anchor_mapQ", "depth","map_len","end3", "end5", "transduction","direction", "refpos", "dist", "c1", "upstream")]
+subTrain$pos <- factor(subTrain$pos)
+rf1 = randomForest(pos~.,data=subTrain, ntree=1000)
+
+trainG <- subset(total, anchor_split==1)
+subTrain <- trainG[,c("pos", "seg", "map", "anchor_align", "anchor_len", "anchor_mm", "anchor_direct", "anchor_insert", "anchor_seg", "anchor_map", "anchor_XS", "anchor_AS", "anchor_mapQ", "depth","map_len","end3", "end5", "transduction","direction", "refpos", "dist", "c1", "upstream")]
+subTrain$pos <- factor(subTrain$pos)
+rf2 = randomForest(pos~.,data=subTrain, ntree=1000)
+
+trainG <- subset(total, anchor_split==0)
+subTrain <- trainG[,c("pos", "seg", "map", "anchor_align", "anchor_len", "anchor_mm", "anchor_XS", "anchor_AS", "anchor_mapQ","depth","map_len","end3", "end5", "transduction","direction", "refpos", "dist", "c1", "upstream")]
+subTrain$pos <- factor(subTrain$pos)
+rf3 = randomForest(pos~.,data=subTrain, ntree=1000)
+
+library("ggplot2")
+labels <- attr(rf2$terms, "term.labels")
+importance<-rf2$importance
+LINE1 <- data.frame(labels, importance)
+ggplot(LINE1, aes(x=reorder(labels, -MeanDecreaseGini), y=MeanDecreaseGini)) +
+    geom_bar(position=position_dodge(), stat="identity",
+          fill="steelblue", # Use black outlines,
+          size=.3) +      # Thinner lines
+    xlab("Features") +
+    ylab("MeanDecreaseGini") +
+    theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=24,face="bold"),
+        axis.text.x=element_text(angle=45, hjust=1))
+ggsave("/home/xwzhu/levinson/MEI_plots/ALU_modeling_PE1.pdf",useDingbats=FALSE, width=7, height=7)
+
+labels <- attr(rf3$terms, "term.labels")
+importance<-rf3$importance
+LINE1 <- data.frame(labels, importance)
+ggplot(LINE1, aes(x=reorder(labels, -MeanDecreaseGini), y=MeanDecreaseGini)) +
+    geom_bar(position=position_dodge(), stat="identity",
+          fill="steelblue", # Use black outlines,
+          size=.3) +      # Thinner lines
+    xlab("Features") +
+    ylab("MeanDecreaseGini") +
+    theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=24,face="bold"),
+        axis.text.x=element_text(angle=45, hjust=1))
+ggsave("/home/xwzhu/levinson/MEI_plots/ALU_modeling_PE2.pdf",useDingbats=FALSE, width=7, height=7)
+
+pdf("/home/xwzhu/levinson/MEI_plots/Alu_modeling_PE_oob1.pdf")
+plot(rf2, ylim=c(0,0.1), main="")
+dev.off()
+
+pdf("/home/xwzhu/levinson/MEI_plots/Alu_modeling_PE_oob2.pdf")
+plot(rf3, ylim=c(0,0.1), main="")
+dev.off()

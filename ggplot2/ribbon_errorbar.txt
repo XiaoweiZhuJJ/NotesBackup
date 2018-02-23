@@ -1,0 +1,29 @@
+eva<- read.table("/Users/TXW/Documents/MEI/qPCR/ddPCR_chapter/evagreen.txt", header=TRUE, sep="\t")
+dilution <- c(1, 0.2, 0.04, 0.008, 0.0016)
+
+ticks <- seq(-5, 0, by=1)
+
+dlabel <- c("0.032%", "0.16%", "0.8%", "4%", "20%" ,"100%")
+pdf("/Users/TXW/Documents/MEI/qPCR/ddPCR_chapter/new_titration.pdf")
+p<-ggplot(data=eva, aes(x=log(dilution)/log(5), y=log(eva$ratio)/log(5), colour=Approach)) + geom_point() + geom_line()+xlim(-5,0)+ylim(-5,0)+xlab("Expected Titration")+ylab("ddPCR measurement")+scale_x_continuous(breaks = ticks, labels = dlabel)+scale_y_continuous(breaks = ticks, labels = dlabel)
+
+p<-p+geom_ribbon(aes(ymin=log(eva$min)/log(5), ymax=log(eva$max)/log(5)), linetype=2, alpha=0.1)
+p
+dev.off()
+
+
+library("ggplot2")
+eva<- read.table("/Users/TXW/Documents/MEI/qPCR/ddPCR_chapter/evagreen.txt", header=TRUE, sep="\t")
+dilution <- c(1, 0.2, 0.04, 0.008, 0.0016)
+tickx <- seq(0,5, by=1)
+ticky <- seq(-5,0,by=1)
+labelx <- c("100%","20%","4%","0.8%","0.16%","0.032%")
+labely <- c("0.032%", "0.16%", "0.8%", "4%", "20%" ,"100%")
+
+pdf("/Users/TXW/Documents/MEI/qPCR/ddPCR_chapter/new_titration_reversed.pdf")
+p<-ggplot(data=eva, aes(x=-log(dilution)/log(5), y=log(eva$ratio)/log(5), colour=Approach)) + geom_point() + geom_line()+xlim(0,5)+ylim(-5,0)+xlab("Expected Titration")+ylab("ddPCR measurement")+scale_x_continuous(breaks = tickx, labels = labelx)+scale_y_continuous(breaks = ticky, labels = labely)
+
+p<-p+geom_ribbon(aes(ymin=log(eva$min)/log(5), ymax=log(eva$max)/log(5)), linetype=2, alpha=0.1)
+p
+dev.off()
+

@@ -1,0 +1,97 @@
+### panel A ###
+pdf("/srv/gsfs0/projects/levinson/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/320.0725.LINE.pdf")
+te <- read.table("/srv/gsfs0/projects/levinson/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/Sample_320-FR-clone3/retro_0725/LINE/Sample_320-FR-clone3.LINE.GT2.cand.calls", sep="\t", header=F)
+plot(jitter(te[,5],1), jitter(te[,6],1), xlim=c(0,50), xlab="support reads", ylab="# clones", main="320-FR-clone3 LINE")
+abline(v=4.5,col=2)
+abline(h=3.5,col=2)
+
+dat1 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/TPTN42/LINE/somatic.LINE.1.calls", header=T, sep="\t")
+dat2 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/TPTN42/LINE/somatic.LINE.0.calls", header=T, sep="\t")
+
+z <- c()
+for (i in 1:dim(dat1)[1])
+   {
+    if ( (max(dat1[i,4:54]) > 9) && ( (sum(dat1[i,4:28]>1) + sum(dat1[i,30:54]>1)) < 4) )
+       {
+        z <- rbind(z, dat1[i,])
+       }
+   }
+
+subdat <- subset(dat1, dat1[,11] > 0)
+x <- subdat[,11]
+y <- c()
+for (i in 1:20970)
+   {
+    y[i]<-sum(subdat[i,4:28]>0) + sum(subdat[i,30:54]>0)
+   }
+clone <- data.frame(x, y)
+names(clone) <- c("x", "y")
+
+ggplot(clone, aes(x=x, y=y)) +
+   geom_jitter() +
+   theme(axis.text=element_text(size=18),
+       axis.title=element_text(size=24,face="bold")) +
+   xlab("Number of support reads") +
+   ylab("Number of clones")
+ggsave("/home/xwzhu/levinson/MEI_plots/BG_clone16_pos.pdf",useDingbats=FALSE, width=7, height=7)
+
+### panel B ###
+### PE reads ###
+r2:E00121:113:H3Y5GCCXX:2:2124:8074:11822,r2:E00121:113:H3Y5GCCXX:1:2102:30790:25640,r1:E00121:113:H3Y5GCCXX:2:2215:7181:45646,r2:E00121:113:H3Y5GCCXX:2:1209:21026:48037,r2:E00121:113:H3Y5GCCXX:2:2106:8064:47105,r2:E00121:113:H3Y5GCCXX:4:1123:26050:41480,r1:E00121:113:H3Y5GCCXX:3:1206:18559:14160,r2:E00121:113:H3Y5GCCXX:1:1110:6633:28980,r2:E00121:113:H3Y5GCCXX:3:1211:9881:25640,r1:E00121:113:H3Y5GCCXX:1:2102:30699:70980
+### SR reads ###
+r1:E00121:113:H3Y5GCCXX:3:2202:22700:51219,r1:E00121:113:H3Y5GCCXX:4:1123:23624:49619,r1:E00121:113:H3Y5GCCXX:2:1124:20457:39880,r2:E00121:113:H3Y5GCCXX:2:2112:32170:19803,r2:E00121:113:H3Y5GCCXX:2:1217:8105:51958,r2:E00121:113:H3Y5GCCXX:1:2120:6095:10327,r1:E00121:113:H3Y5GCCXX:2:1210:24263:29806
+
+### read1 ###
+E00121:113:H3Y5GCCXX:3:2202:22700:51219 163     chr4    5642931 60      151M    =       5643280 426
+E00121:113:H3Y5GCCXX:3:2202:22700:51219 83      chr4    5643280 60      77M74S
+### read 2 ###
+E00121:113:H3Y5GCCXX:2:1217:8105:51958  99      chr4    5643034 151M
+E00121:113:H3Y5GCCXX:2:1217:8105:51958  147     chr4    5643252 42      105M46S
+### read 3 ###
+E00121:113:H3Y5GCCXX:1:2120:6095:10327  99      chr4    5643088 60      151M
+E00121:113:H3Y5GCCXX:1:2120:6095:10327  147     chr4    5643266 37      91M60S
+### read 4 ###
+E00121:113:H3Y5GCCXX:2:1209:21026:48037 97      chr4    5643091 60      151M    chr13   106218270
+E00121:113:H3Y5GCCXX:2:1209:21026:48037 145     chr13   106218270       0       151M
+### read 5 ###
+E00121:113:H3Y5GCCXX:3:1206:18559:14160 161     chr4    5643151 60      151M
+E00121:113:H3Y5GCCXX:3:1206:18559:14160 81      chrX    34820165        0       151M
+### read 6 ###
+E00121:113:H3Y5GCCXX:2:2124:8074:11822  97      chr4    5643182 60      151M
+E00121:113:H3Y5GCCXX:2:2124:8074:11822  145     chr18   62910845        0       151M
+### read 7 4:1123:26050:41480 ###
+E00121:113:H3Y5GCCXX:4:1123:26050:41480 65      chr4    5643234 49      123M28S
+E00121:113:H3Y5GCCXX:4:1123:26050:41480 129     chr21   20200680        0       151M
+### read 8 2:1124:20457:39880 ###
+E00121:113:H3Y5GCCXX:2:1124:20457:39880 99      chr4    5643354 34      63S88M
+E00121:113:H3Y5GCCXX:2:1124:20457:39880 147     chr4    5643534 60      151M
+### read 9 1:1110:6633:28980 ###
+E00121:113:H3Y5GCCXX:1:1110:6633:28980  113     chr4    5643354 37      56S95M
+E00121:113:H3Y5GCCXX:1:1110:6633:28980  177     chr14   18285027  0       151M
+### read 10 1:2102:30790:25640 ###
+E00121:113:H3Y5GCCXX:1:2102:30790:25640 81      chr4    5643354 34      62S89M
+E00121:113:H3Y5GCCXX:1:2102:30790:25640 161     chr6    129003424       0       151M
+### read 11 1:2102:30699:70980 ###
+E00121:113:H3Y5GCCXX:1:2102:30699:70980 145     chr4    5643388 60      151M
+E00121:113:H3Y5GCCXX:1:2102:30699:70980 97      chr6    70015389  0 151M
+### read 12 2:2106:8064:47105 ###
+E00121:113:H3Y5GCCXX:2:2106:8064:47105  81      chr4    5643396 60      151M
+E00121:113:H3Y5GCCXX:2:2106:8064:47105  161     chr8    125587790       0       151M
+### read 13 3:1211:9881:25640 ###
+E00121:113:H3Y5GCCXX:3:1211:9881:25640  81      chr4    5643444 60      151M
+E00121:113:H3Y5GCCXX:3:1211:9881:25640  161     chrY    8176536 0       151M
+### read 14 2:1210:24263:29806 ###
+E00121:113:H3Y5GCCXX:2:1210:24263:29806 177     chr4    5643495 60      151M
+E00121:113:H3Y5GCCXX:2:1210:24263:29806 113     chr5    65500403        0       68S83M
+SA:Z:chr4,5643354,+,80S71M,0,0;
+### read 15 2:2215:7181:45646 ###
+E00121:113:H3Y5GCCXX:2:2215:7181:45646  177     chr4    5643542 60      28S123M
+E00121:113:H3Y5GCCXX:2:2215:7181:45646  113     chr18   29151510        0       151M
+### read 16 2:2112:32170:19803 ###
+E00121:113:H3Y5GCCXX:2:2112:32170:19803 161     chr2    88731893        0       114M37S
+SA:Z:chr4,5643354,+,111S40M,0,0;
+E00121:113:H3Y5GCCXX:2:2112:32170:19803 81      chr4    5643556 60      151M
+### read 17 4:1123:23624:49619 ###
+E00121:113:H3Y5GCCXX:4:1123:23624:49619 177     chr4    5643628 60      151M
+E00121:113:H3Y5GCCXX:4:1123:23624:49619 113     chr10   19089321        0       55S96M
+SA:Z:chr4,5643354,+,93S58M,0,1;

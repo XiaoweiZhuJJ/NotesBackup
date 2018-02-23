@@ -1,0 +1,1233 @@
+
+357719
+
+find /share/diskarray1/MEI/rawdata/batch4 -name "*gz" -print0 | xargs -0 gunzip
+find ./ -name "201201*gz" -mtime 12 -print0 | xargs -0 zcat | awk '{print NF}'| head
+
+
+find /u/username -print|xargs ls -l
+
+find ./ -name '*article*' | xargs -I '{}' mv {} ../backup
+
+find ./ -name '*article*' -exec mv {}  ../backup  \;
+
+### cleaning /temp folder ###
+I would think removing files older than 6 months should be fine. If the files are in use their modify dates will be updated.
+ find . -mtime +180 -exec rm -f {} \;
+
+awk '{print $1}' crash.list
+
+awk '{print $1}' crash.list | find /share/diskarray1/outpuxt/merCONT_1ge/ -type f -name *
+### no longer working ###
+while read line; do
+    var=$(echo $line|awk '{print $1}')
+    find /share/diskarray4/MEI/IPS -name *$var
+done < ./unfinished.txt
+
+
+find /share/diskarray1/output/merge/ -type f -name *
+
+sed 's/\/share\/diskarray1\/output\/merge\///' LDIDs.txt > LDID.clean
+sed 's/\/script\/CUFF13FIX[0-9]\.o[0-9]*//g' LDID.clean > LDID.final
+
+nohup scp txw@bix.stanford.edu:/share/diskarray1/MEI/merge/AM60cer_prep*/* ./
+
+grep '^>' reads.5m.50bp.cs.fa | wc -l
+grep -P '\t' *
+grep 'pattern1\|pattern2' filename  ### grep or
+
+ps ax
+
+
+while read line; do
+     awk '{print $2}' | grep -v 0 | grep -v 16
+done < ./names.txt
+
+grep nonsynonymous ./rare_SNPs_freq.txt.exonic_variant_function | awk '{print $5,"\t",$6,"\t",$7,"\t",$8,"\t",$9,"\t",$10,"\t",$11,"\t",$12,"\t",$13}' > ./rare_SNPs_freq.txt.exonic_nonsynonymous
+
+/home/txw/annovar/annovar/annotate_variation.pl \
+   -filter -dbtype avsift \
+   ../2269_2270/rare_SNPs_freq.txt.exonic_nonsynonymous \
+   --buildver hg19 \
+   /home/txw/annovar/annovar/humandb/
+
+
+rpm -ivh /share/diskarray3/htop/htop-1.0.1-2.el5.rf.x86_64.rpm
+
+### Memory status ###
+free -m -h -t
+
+touch -t 08272000 /tmp/timestamp
+nohup find ./ -name HTseq.gene.count.txt.corrected ! -empty -newer /tmp/timestamp
+nohup find ./ -name '*HTseq.gene.count.txt.corrected' ! -empty > nohup.out
+
+cat ./nohup.out | awk -F/ '{print $1}'
+echo ./nohup.out | awk -F/ '{print $NF}'
+
+qselect -u $USER | xargs qdel
+
+     for (( c=1; c<=$6; c++ ))
+     do
+       mkdir /share/diskarray1/output/$1/alignout/$c
+     done
+
+
+awk '/Simple/ {print $5"\t"$6"\t"$7"\t"$10}' hg19.fa.out | sed 's/chr//' | head
+
+sed 's/whole blood[^tab]//' old.txt >
+
+sort -k2,2 -k1,1 old.txt > Levinson.MDD.RNAseq.subjects.table.ReadMe.txt
+
+File checks
+
+    File test operators check if a file exists, is readable or writable, etc.
+     -r File is readable by effective uid/gid.
+    -w File is writable by effective uid/gid.
+    -x File is executable by effective uid/gid.
+    -o File is owned by effective uid.
+    -R File is readable by real uid/gid.
+    -W File is writable by real uid/gid.
+    -X File is executable by real uid/gid.
+    -O File is owned by real uid.
+    -e File exists.
+    -z File has zero size (is empty).
+    -s File has nonzero size (returns size in bytes).
+    -f File is a plain file.
+    -d File is a directory.
+    -l File is a symbolic link.
+    -p File is a named pipe (FIFO), or Filehandle is a pipe.
+    -S File is a socket.
+    -b File is a block special file.
+    -c File is a character special file.
+    -t Filehandle is opened to a tty.
+    -u File has setuid bit set.
+    -g File has setgid bit set.
+    -k File has sticky bit set.
+    -T File is an ASCII text file (heuristic guess).
+    -B File is a "binary" file (opposite of -T).
+    -M Script start time minus file modification time, in days.
+    -A Same for access time.
+    -C Same for inode change time (Unix, may differ for other platforms)
+
+
+find /u/username -print|xargs ls -l
+
+
+cat /share/diskarray4/output/MZ44prep3/GATK/BAM/22/MZ44prep3.utag.rtag.txt | while read search
+do
+ grep "$search" MZ44prep3.22.recal.sam_OEA.sam >> match_UR.tags
+done
+
+find . -type f -name "FILE-TO-FIND" -exec rm -f {} \;
+
+
+ awk '{for(i=33;i<104;i++) $i="";print}' chr22.inter.norm.counts
+
+
+awk -F ',' 'NR <= 8 { next } {print $2"\t"$10"\t"$11}' humanomni1-quad_v1-0_h.csv | less
+
+
+while read line; do
+     awk -F ',' -vLOOKUPVAL=rs12499235 '$1 == LOOKUPVAL { print $2"\t"$3 }' < humanomni1-quad_v1-0_h_simple_loci_cords.txt
+done < /share/diskarray1/1000RNAseq/plink/original/IPSc/FB\ DNA\ 10551.snparray.txt
+
+while read line; do
+     grep `awk -F ',' 'NR <= 11 { next } {print $1}'` humanomni1-quad_v1-0_h_simple_loci_cords.txt
+done < /share/diskarray1/1000RNAseq/plink/original/IPSc/FB\ DNA\ 10551.snparray.txt
+
+grep `awk -F ',' 'NR <= 11 { next } {print $1}' /share/diskarray1/1000RNAseq/plink/original/IPSc/FB\ DNA\ 10551.snparray.txt` humanomni1-quad_v1-0_h_simple_loci_cords.txt
+
+awk -F ',' 'NR <= 11 { next } {print $1}' /share/diskarray1/1000RNAseq/plink/original/IPSc/FB\ DNA\ 10551.snparray.txt |
+
+
+
+while read line; do
+     file=$(echo $line | cut -d',' -f1)
+     ./lookup.sh $file
+done < /share/diskarray1/1000RNAseq/plink/original/IPSc/FB\ DNA\ 10551.snparray.txt
+
+while read line; do      file=$(echo $line | cut -d',' -f1);      /share/diskarray1/1000RNAseq/plink/original/WG0117086/lookup.sh $file; done < /share/diskarray1/1000RNAseq/plink/original/IPSc/FB\ DNA\ 10551.snparray.txt > /home/purmann/humanomni1-quad_v1-0_h.cords.txt
+
+
+### read in the number of lines ###
+my_var=$(wc -l ./vsRep/Alu4both.rep.bed | awk '{ print $1 }')
+
+### real value calculation ###
+ratio=$(echo "scale=2; $over/$total" | bc)
+
+### print variable to file ###
+echo "$ratio" > ./test
+echo -e "$ratio"'\t'"$ratio" > ./test
+
+### checking number of rows for many files ###
+find ./ -name list* -print|xargs wc -l
+
+### column sums ###
+cat /share/diskarray4/tlex_samplesrun2/capture/merge/4groups.unique.bed | awk '{ sum+=($3-$2)} END {print sum}'
+awk '{ if ($5>1) sum+= $5} END {print sum}'  NA12878.LINE.PE.calls
+
+### delete files by filenames ###
+find . -type f -name *sam -exec rm -f {} \;
+
+tar -cvzf filename.bla directory_to_compress/
+
+awk '{print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10}' cov_1b.txt > list_1b.txt
+
+
+### delete multi files by names ###
+find . -type f -name "FILE-TO-FIND" -exec rm -f {} \;
+find ./*/alignout -name *sam -exec rm -f {} \;
+
+### skip rows and check the string length ###
+awk '!((NR+2) % 4) && (length($0) != 49) {print}' simul_reads.fastq
+
+### printing previous rows ###
+awk '!((NR+2) % 4) && (length($0) != 49) {print a"\t"$0}{a=$0}' simul_reads.fastq | less
+
+### awk print next line ###
+You can use awk, sed and any other tool for the same. Here is awk syntax:
+awk '/regex/ { getline; print $0 }' /path/to/file
+awk -F: '/regex/ { getline; print $0 }' /path/to/file
+awk -F: '/regex/ { print $0; getline; print $0; getline; print $0; getline; print $0}' /path/to/fastq
+
+### rep using perl erg expression ###
+grep -P [atg] /share/diskarray3/UCSC/UCSC_introns_seq_dec_2013.merge.seq
+grep -P NH:i:16"\t" simul.sorted.sam | less
+
+### shuffle ###
+paste f1.fastq f2.fastq |\
+awk '{ printf("%s",$0); n++; if(n%4==0) { printf("\n");} else { printf("\t\t");} }' |\
+shuf  |\
+sed -n 1,1000p |\
+sed 's/\t\t/\n/g' |\
+awk '{print $1 > "file1.fastq"; print $2 > "file2.fatsq"}'
+
+http://www.biostars.org/p/6544/
+
+### sort reverse order ###
+sort -k5,5n -k4,4nr junction.up.bed | less
+
+### substitution in a specific column ###
+awk '{gsub(/[^0-9]/,//,$9); print}' new.exons.1000RNA.txt | less
+
+### split certain column and condition on one element ###
+awk '{split($9, num, "_"); if (num[1]>1) print}' new.exons.1000RNA.txt  | less
+awk '{split($1, name, "_"); print name[1]"\t"name[2]"\t"name[3]"\t"name[4]"\t"$10}' counts.txt > overall.txt
+
+
+### random shuffling files ###
+awk 'BEGIN{srand() }
+{ lines[++d]=$0 }
+END{
+    while (1){
+    if (e==d) {break}
+        random = int(1 + rand() * d)
+        if ( random in lines  ){
+            print lines[random]
+            delete lines[random]
+            ++e
+        }
+    }
+}' shuf.test
+
+
+
+It's meant to be a script to replace the shuf function, and you will still need the rest of the code. Here is a complete pipeline:
+
+paste read1.fastq read2.fastq |\
+awk '{ printf("%s",$0); n++; if(n%4==0) { printf("\n");} else { printf("\;");} }' |\
+awk -v seed=$RANDOM 'BEGIN{srand(seed) }
+{ lines[++d]=$0 }
+END{
+    rand()
+    while (1){
+    if (e==d) {break}
+        random = int(1+ rand() * d)
+        if ( random in lines  ){
+            print lines[random]
+            delete lines[random]
+            ++e
+        }
+    }
+ } ' |\
+sed -n 1,100000p |\
+tr "\;" '\n' |\
+awk '{print $1 > "subset1.fastq"; print $2 > "subset2.fastq"}'
+
+
+
+
+To print each identical line only one, in any order:
+
+sort -u
+
+To print only the unique lines, in any order:
+
+sort | uniq -u
+
+To print each identical line only once, in the order of their first occurrence: (for each line, print the line if it hasn't been seen yet, then in any case increment the seen counter)
+
+<!--awk '!seen[$0] {print} {++seen[$0]}'-->
+
+To print only the unique lines, in the order of their first occurrence: (record each line in seen, and also in lines if it's the first occurrence; at the end of the input, print the lines in order of occurrence but only the ones seen only once)
+
+awk '!seen[$0]++ {lines[i++]=$0}
+     END {for (i in lines) if (seen[lines[i]]==1) print lines[i]}'
+
+
+### awk if not ###
+samtools view simul.sorted.bam -q 49 | awk '{if ($15 != "NH:i:1") print $15 }' | less
+
+### awk seperate files with tab ###
+awk -F$'\t'
+### replace specific column ###
+awk '$5="lib1_"$5' OFS='\t' Heart_1.sr.tabe.discover  > temp
+
+### check the second to the last column ###
+samtools view simul.sorted.bam -q 49 | awk '{if ($(NF-1) != "NH:i:1") print $(NF-1) }' | less
+
+### modify only one column, print out the whole line ##
+awk '{print $1"\t"$2-5"\t"$3+5}' \
+    /share/diskarray3/1000RNAseq_exp/$1/newtrans/exonic/02_Novel.no.exons.txt \
+    | awk '{if ($2 < 0) $2=0; print $1"\t"$2"\t"$3}' \
+    > /share/diskarray3/1000RNAseq_exp/$1/newtrans/exonic/04_Novel.no.exons.5bp.bed
+
+
+### clean a number of processes ###
+kill -9 6615 6816 7015 7218 7457 8982 9513 11137 11216 11455 13103 13502 13525 13842 13869 13917 13952
+
+
+### only replace the first line ###
+sed '0,/Apple/{s/Apple/Banana/g}' filename > newfile
+
+
+### shell, comment block of script ###
+#!/bin/bash
+echo before comment
+: <<'END'
+bla bla
+blurfl
+END
+echo after comment
+
+### perl, comment block, will still be compiled ###
+if (0) { ... }
+
+ 1417 down vote accepted
+
+
+#### To check if a directory exists in a shell script you can use the following:
+if [ -d "$DIRECTORY" ]; then
+  # Control will enter here if $DIRECTORY exists.
+fi
+
+Or to check if a directory doesn't exist:
+
+if [ ! -d "$DIRECTORY" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+fi
+
+## genome center sequencing data ###
+/srv/gsfs0/projects/gbsc/SeqCenter/Illumina/PublishedResults/${year}/${month}
+for older ones:
+/srv/gs1/projects/scg/Archive/IlluminaRuns/2012/mar/120315_MONK_0228_BD0RPAACXX
+
+### symbolic links ###
+ln [-f] source_file target_file
+
+### BEDtools path on bix ###
+export PATH=$PATH:/home/txw/bedtools/BEDTools-Version-2.15.0/bin
+
+### awk external variables ###
+awk -v te="Alu" -v ind="1" -v person="ind$ind" '{if ( ($8==person) && ($9==te) ) print}' \
+    /share/diskarray3/MEI_output/capture/capture/group3stg/cov_relax_3stg.txt | less
+
+
+### display many files with file names as headers ###
+tail +1 /share/diskarray3/MEI_output/HiSeq/output/AM77/TPTN/*.roc.txt
+
+
+### cut first column, first row ###
+awk '{if(NR>1) print}' 3tissue.LINE.pvBH.txt | sed -e 's/\"//g' | cut -f1 --complement > 3tissue.LINE.pvBH.bed
+
+
+### sudoers ###
+Add
+fcocquyt to wheel group
+
+And change
+/etc/sudoers
+
+uncomment the following line
+
+%wheel        ALL=(ALL)       ALL
+
+
+    To split string $s to lines of 100 characters long do:
+
+    $s=~s/(.{100})/$1\n/g;
+    [download]
+
+	[reply]
+[d/l]
+
+    Re^2: Printing Fixed Width Strings and Spliting String into Multiple Lines
+    by oko1 on Feb 08, 2012 at 06:09 UTC
+
+        There's no reason to invoke something as heavy-duty as the regular expression engine when all you're working with is substrings of a given length.
+
+        my $s; print "$s\n" while $s = substr $str, 0, 100, '';
+
+
+
+install R packages on bix
+Hi Fletcher,
+
+Thanks for the nice summary of statuses and to-dos.   The networking status and to-dos seem to be missing from the list.
+The dell OMSA can be installed easily with the puppet dell module we have.
+
+
+------------------------------------------------------------------------------------------------------
+
+Xiaowei and Fletcher,   not sure you guys know this,  but FYI
+
+Our servers under puppet control come preconfigured with EPEL software repositories and other often used Linux  software repositories.  For example the R software package is in the EPEL repository,.   For installing new packages like R on these servers from EPEL,  you could simply do:
+
+             yum —enable-repo=irt-epel install <R or whatever package-name>
+
+irt-epel is only one of the repositories,  there are a lot more on our servers pre-configured,  our repositories start with irt-,   to see the entire list of repositories on the server, you can do:
+
+            yum —enable-repo=*  repolist
+
+e.g.
+
+[alanxge@bix2 ~]$      yum --enablerepo=* repolist
+
+Loaded plugins: dellsysid, fastestmirror, priorities
+Loading mirror speeds from cached hostfile
+ * elrepo: elrepo.org
+ * elrepo-extras: elrepo.org
+ * elrepo-kernel: elrepo.org
+ * elrepo-testing: elrepo.org
+ * rpmforge: mirror.hmc.edu
+ * rpmforge-extras: mirror.hmc.edu
+ * rpmforge-testing: mirror.hmc.edu
+elrepo                                                   | 2.9 kB     00:00
+elrepo-extras                                            | 2.9 kB     00:00
+elrepo-kernel                                            | 2.9 kB     00:00
+elrepo-testing                                           | 2.9 kB     00:00
+irt-centos-centosplus                                    | 3.4 kB     00:00
+irt-centos-contrib                                       | 2.9 kB     00:00
+irt-centos-scl                                           | 2.9 kB     00:00
+irt-epel                                                 | 4.4 kB     00:00
+irt-epel-debuginfo                                       | 3.0 kB     00:00
+irt-epel-source                                          | 3.7 kB     00:00
+irt-epel-testing                                         | 4.4 kB     00:00
+irt-epel-testing-debuginfo                               | 3.0 kB     00:00
+irt-epel-testing-source                                  | 3.7 kB     00:00
+irt-puppet                                               | 2.5 kB     00:00
+irt-puppet-dependencies                                  | 2.5 kB     00:00
+irt-rpmforge                                             | 1.9 kB     00:00
+irt-rpmforge-extras                                      | 1.9 kB     00:00
+irt-rpmforge-testing                                     | 1.9 kB     00:00
+rpmforge                                                 | 1.9 kB     00:00
+rpmforge-extras                                          | 1.9 kB     00:00
+rpmforge-testing                                         | 1.9 kB     00:00
+10341 packages excluded due to repository priority protections
+repo id                    repo name                                 status
+Rocks-6.1.1                Rocks 6.1.1                                 309+2,264
+elrepo                     ELRepo.org Community Enterprise Linux Rep       289+2
+elrepo-extras              ELRepo.org Community Enterprise Linux Rep        8+55
+elrepo-kernel              ELRepo.org Community Enterprise Linux Ker        20+4
+elrepo-testing             ELRepo.org Community Enterprise Linux Tes        40+4
+irt-centos-base            IRT-CentOS-6 - Base                             6,367
+irt-centos-centosplus      IRT-CentOS-6 - Plus                                96
+irt-centos-contrib         IRT-CentOS-6 - Contrib                              0
+irt-centos-extras          IRT-CentOS-6 - Extras                              15
+irt-centos-private         IRT-CentOS-Private-6 - IRT's Private Cent          50
+irt-centos-scl             IRT-CentOS-6 - SCL                              1,043
+irt-centos-updates         IRT-CentOS-6 - Updates                          1,608
+irt-dell-omsa-indep        IRT Dell OMSA repository - Hardware indep    2,919+12
+irt-dell-omsa-specific     IRT Dell OMSA repository - Hardware speci           0
+irt-epel                   IRT Extra Packages for Enterprise Linux 6  11,063+110
+irt-epel-debuginfo         Extra Packages for Enterprise Linux 6 - x       2,187
+irt-epel-source            Extra Packages for Enterprise Linux 6 - x           0
+irt-epel-testing           IRT Extra Packages for Enterprise Linux 6       824+2
+irt-epel-testing-debuginfo IRT Extra Packages for Enterprise Linux 6          77
+irt-epel-testing-source    IRT Extra Packages for Enterprise Linux 6           0
+irt-puppet                 IRT-Puppet-6 - IRT's Private Puppet Repo      357+107
+irt-puppet-dependencies    IRT-Puppet-Dependencies-6 - IRT's Private       64+13
+irt-rpmforge               RHEL 6 - RPMforge.net - dag               3,172+1,546
+irt-rpmforge-extras        RHEL 6 - RPMforge.net - extras                 67+644
+irt-rpmforge-testing       RHEL 6 - RPMforge.net - testing                 30+60
+irt-vmware-tools           IRT-VMware-Tools-6 - IRT's Mirrored VMWar          41
+rpmforge                   RHEL 6 - RPMforge.net - dag                   0+4,718
+rpmforge-extras            RHEL 6 - RPMforge.net - extras                  0+711
+rpmforge-testing           RHEL 6 - RPMforge.net - testing                  0+90
+repolist: 30,646
+
+install.packages("glmnet", repos = "http://cran.us.r-project.org")
+
+> On Jan 14, 2015, at 10:13 AM, Fletcher Cocquyt <fcocquyt@stanford.edu> wrote:
+>
+> Hi All - we thought it’d be good to meet and discuss the post migration status and hash out any remaining TODO items
+>
+> STATUS:
+> Last Wednesday we migrated (thanks ops!)  the 2 RAID controller cards and 3 diskarrays to the new head unit resulting in a total of 5 x 25Tb arrays mounted on /export/diskarray1-5
+> These are all configured as RAID6 + hotspare
+> Xiaowei was able to test and report the cluster was working nicely.
+>
+> Recently completed and TODOs:
+>
+> 1 - installed R package on all nodes - complete
+> 2 - configured cacti monitoring for CPU, network, memory trending - complete
+> 3 - Puppet is installed and controlling the standard set of files - complete
+> 4 - Zabbix is installed TODO: integrate Dell OMSA hardware monitoring with Zabbix - Fletch & Chuck
+> 5 - TODO: test winscp sudo methods to allow remote sftp browsing & access as root (or workout alternate method using group permission) - Fletch
+> 6 - TODO: review networking configuration - Fletch & Ops
+> 7 - TODO: discuss if we want to rename compute nodes online or update their physical labels
+> 8 - Address any other Questions/tasks
+>
+> thanks
+>
+> Fletcher Cocquyt
+> Principal Engineer
+> fcocquyt@stanford.edu
+>
+>
+>
+>
+
+
+To tar and gzip a folder, the syntax is:
+
+tar czf name_of_archive_file.tar.gz name_of_directory_to_tar
+
+
+
+
+The problem is the actual character codes that define new lines on different systems. Windows systems commonly use a CarriageReturn+LineFeed (CRLF) and *NIX systems use only a LineFeed (LF).
+
+These characters can be represented in RegEx as \r\n or \n (respectively).
+
+Sometimes, to hash through a text file, you need to parse New Line characters. Try this for DOS-to-UNIX in perl:
+
+perl -pi -e 's/\r\n/\n/g' input.file
+
+or, for UNIX-to-DOS using sed:
+
+$ sed 's/$'"/`echo \\\r`/" input.txt > output.txt
+
+or, for DOS-to-UNIX using sed:
+
+$ sed 's/^M$//' input.txt > output.txt
+
+1) An unmapped read whose mate is mapped.
+samtools view -u -f 4 -F264 alignments.bam > temp1.bam
+2) A mapped read who's mate is unmapped
+samtools view -u -f 8 -F 260 alignments.bam > temp2.bam
+3) Both reads of the pair are unmapped
+samtools view -u -f 12 -F 256 alignments.bam > temp3.bam
+
+
+sudo -s
+
+install python module locally
+mkdir install/lib/python
+export PYTHONPATH=$PYTHONPATH:/share/diskarray1/PySam/pysam-0.6/install/lib/python
+/usr/local/bin/python2.7 ./setup.py install --home ./install/
+
+
+
+Then, suppose this is PE library, someone might want to know if one read is the first read in a pair or second read in a pair (indicated in export file of illumina data). You can do this
+
+if ($FLAG & 0x40)
+$1st_flag = 1
+if ($FLAG & 0x40)
+$2st_flag = 1
+
+sudo chown -R username:group directory
+no bash4.1 on prompt, edit .bashrc
+export PS1="[\u@\h \W]\$ "
+
+echo `seq -f "%.0f" 5386905  5386921`
+7823111 7823112 7823113 7823114 7823115 7823116 7823117 7823118
+ $ qdel 7823111 7823112 7823113 7823114 7823115 7823116 7823117 7823118
+
+
+The command to clear the E status is:
+
+qmod -cq all.q@compute-0-4.local
+
+thanks
+
+sed replace newlines
+ 670
+down vote
+accepted
+
+
+Or use this solution with sed:
+
+sed ':a;N;$!ba;s/\n/ /g'
+
+This will read the whole file in a loop, then replaces the newline(s) with a space.
+
+Update: explanation.
+
+    create a label via :a
+    append the current and next line to the pattern space via N
+    if we are before the last line, branch to the created label $!ba ($! means not to do it on the last line (as there should be one final newline)).
+    finally the substitution replaces every newline with a space on the pattern space (which is the whole file).
+
+replace with new line
+echo "one,two,three" | sed "s/,/\\`echo -e '\n\r'`/g"
+
+### print the first line, before searching for pattern ###
+ps aux | awk 'NR == 1 || /PATTERN/'
+
+I was able to clear the (E)rror status on the compute nodes with
+qmod -c ‘*'
+qmod -cq all.q@compute-2-0.local
+
+### pattern match in R ###
+alunorm <- subset(alu, regexpr("_", alu[,1]) < 0)
+
+pattern matching of polyA
+
+while ($seq =~ /AAAA(A+)/gi)
+   {
+    $start = $-[0];
+    $end = $+[0];
+   }
+
+
+samtools view -F 0x400 - to filter out duplicates (create rmdup sam file)
+
+samtools view -f 0x400 - to filter out evrything else, but duplicates (save duplicates in separate sam file)
+
+sort scientific numbers
+sort -k7,7g
+
+print every other line:
+awk ' NR % 2 == 1 { print; } NR % 2 ==0 {print; }' file.fasta
+awk ' NR % 8 == 1 { print; } ' genes.read_group_tracking | less
+
+Merging columns from multiple files
+pr -m -t -s\  file1 file2 | gawk '{print $4,$5,$6,$1}'
+
+## if then in shell ###
+ if [ $var -lt 2 ]; then echo $et >> ./out.test ; fi
+
+### The way to carry out floating point operations in bash is to use bc which is available on almost all linux distributions.
+
+# bc will return 0 for false and 1 for true
+if [ $(echo "23.3 > 7.3" | bc) -ne 0 ]
+then
+  echo "wassup"
+fi
+
+
+
+My most complex one was written by a friend of mine to help me backup my home directory:
+Code:
+
+#!/bin/bash
+
+SNAPDIR=/media/usbdisk/home_backup
+#oldest snapshot to be deleted (4 means there are 4 kept)
+B30="`ls -rd ${SNAPDIR}/snapshot* | awk -F' ' '{print NR,$1}' | awk -F' ' '{if($1>4)print$2}'`"
+B0=${SNAPDIR}/snapshot.`date +%Y%m%d%H%M%S`
+
+wall "about to begin rsync backup"
+echo "Starting backup `date`"
+
+echo "Starting rsync..."
+rsync -avz --delete /home/e/ ${SNAPDIR}/snapshot.current
+
+echo "Rotating Backups..."
+#created hardlinks so there don't have to be multiply copies of the files around
+cp -al ${SNAPDIR}/snapshot.current ${B0}
+rm -fr ${B30}
+
+echo "Finished Backup 'date'"
+wall "rsync backup done"
+
+### merge files by columns ###
+paste -d'\t' File1.txt File2.txt File3.txt File4.txt
+
+
+bioconductor R libraries
+source("https://bioconductor.org/biocLite.R")
+biocLite("Rsamtools")
+
+
+### join files sharing same values in one column ###
+join <(sort File1.txt) <(sort File2.txt) | column -t | tac
+
+### join columns from different files ###
+paste file1 file2 | awk '{print $1,$2,$3,$5}'
+
+
+### make and sort dataframes in R ###
+sum <- data.frame(erv_counts[,1], erv.sum, E2, E4, E5, E6, H2, H4, H5, H6)
+sort.sum <- sum[with(sum, order(-sum[,2])), ]
+
+
+while read line; do
+        if ! grep -q $line $2 ; then
+                    echo -e "$line\t0"
+        else
+                    grep $line $2
+        fi
+
+done < $1
+
+while read line; do echo -e "$line"; done < /home/xwzhu/Platium/200X/NA12878/NA12878.list
+
+
+Use arithmetic expansion: $((EXPR))
+
+num=$((num1 + num2))
+num=$(($num1 + $num2))       # also works
+num=$((num1 + 2 + 3))        # ...
+num=$[num1+num2]             # old, deprecated arithmetic expression syntax
+Using the external expr utility. Note that this is only needed for really old systems.
+
+num=`expr $num1 + $num2`     # whitespace for expr is important
+For floating point:
+
+Bash doesn't directly support this, but there's a couple of external tools you can use:
+
+num=$(awk "BEGIN {print $num1+$num2; exit}")
+num=$(python -c "print $num1+$num2")
+num=$(perl -e "print $num1+$num2")
+num=$(echo $num1 + $num2 | bc)   # whitespace for echo is important
+You can also use scientific notation (e.g.: 2.5e+2)
+
+Common pitfalls:
+
+When setting a variable, you cannot have whitespace on either side of =, otherwise it will force the shell to interpret the first word as the name of the application to run (eg: num= or num)
+
+num= 1 num =2
+
+bc and expr expect each number and operator as a separate argument, so whitespace is important. They cannot process arguments like 3+ +4.
+
+num=`expr $num1+ $num2`
+
+
+uppercase to lowercase
+tr '[:upper:]' '[:lower:]' < input.txt > output.txt
+
+
+bedtools -abam cannot ouput bam files
+need to pile into samtools view -bh first
+
+### filter low map score ###
+samtools view -b -q 10 foo.bam > foo.filtered.bam
+
+There is no "percentage" type in R. So you need to do some post-processing:
+
+DF <- read.table(text="actual,simulated,percent error
+2.1496,8.6066,-300%
+0.9170,8.0266,-775%
+7.9406,0.2152,97%
+4.9637,3.5237,29%", sep=",", header=TRUE)
+
+DF[,3] <- as.numeric(gsub("%", "",DF[,3]))/100
+
+### qsub on SCG4 ###
+qsub -l h_vmem=4G
+
+### submit multicore jobs, RAM is per core usage ###
+qsub -l h_stack=10M -pe shm 5 -l h_vmem=4G ./02_bismark.non.directional.sh
+
+### download with ASCP ###
+ascp fvaccarino@aspera.nygenome.org:VaccarinoF/VAC_10907_B01_GRM_WGS  .
+scp -vr fvaccarino@scp.nygenome.org:/data/delivery/VaccarinoF/data/Project_VAC_10942_B01_GRM_WGS.2015-09-18 ./
+vZ4tla7z
+
+### column number matching to "OPHN1" ###
+head -n 1 raw_counts.txt | awk '{ for(i;i<=NF;i++){
+    if ($i ~ /OPHN1/) { print i } } }'
+
+### data transfer between bix and scg ###
+rsync -a txw@bix2.stanford.edu:/share/diskarray2/BZ/CH3/data/10X_chromium/ ./
+
+### nohup rsync ###
+Just create a screen session with: screen -S rsync then, you detach your screen with
+ctrl+A+D
+
+### setup globus, has to be the latest version ###
+/share/diskarray3/zxl/WGS/globusconnectpersonal-2.3.3/
+
+cd /export/diskarray1/bix2/globus/globusconnectpersonal-2.3.3
+./globusconnectpersonal -setup 937a0208-e762-489c-b454-c0c59bc99ce5
+./globusconnectpersonal -restrict-paths '/export/diskarray3' -start &
+./globusconnectpersonal -stop
+
+
+
+### java jar ###
+qsub -l h_vmem=8G
+java -Xmx4g -jar /srv/gs1/software/picard-tools/1.92/MarkDuplicates.jar \
+
+### igv on scg ###
+qlogin -l h_vmem=12G
+module load java
+java -Xmx4g -jar /srv/gs1/software/igv/igv-2.3.3/igv.jar
+
+### igv on bix3 ###
+/home/txw/txw/IGV/IGV_2.3.57/igv.sh
+
+### hg19 on scg ###
+/srv/gsfs0/shared_data/RefGenomes/H_sapiens/hg19/hg19.fa
+
+### quota of SCG ###
+ssh xwzhu@login05.scg.stanford.edu
+/srv/gsfs0/admin_stuff/gbsc_quota -p levinson
+
+### different columns between two files ###
+merge two files
+sort test | rev | uniq -u -f 1 | rev
+or :
+master_miRNA_list=$1
+sample_RNAseq_score=$2
+while read line; do
+        if ! grep -q $line $2 ; then
+                    echo -e "$line\t0"
+        else
+                    grep $line $2
+        fi
+
+done < $1
+
+### length of strings ###
+myvar="some string"
+echo ${#myvar}
+
+### Bina server ###
+gbsc-bina-portal.stanford.edu
+
+### install R packages on SCG ###
+ install.packages("Package_Name",dependencies=TRUE);
+
+### convert char to numbers in a matrix ###
+ apply(ratio, 1, as.numeric)
+
+### bedtools on SCG4 ###
+module load bedtools/2.16.2
+
+### ###
+Morteza - SGE didn't kill your job. The supernova script failed. In the output of "qacct -j 497696", you'll see these two lines:
+
+failed       0
+exit_status  1
+
+If there was an issue at the SGE level, the failed key would say something other than 0. The exit_status here is that of your supernova script.
+
+### fast concatenate ###
+size=$({ find . -maxdepth 1 -type f -name 'input_file*' -printf '%s+'; echo 0;} | bc)
+fallocate -l "$size" out &&
+  find . -maxdepth 1 -type f -name 'input_file*' -print0 |
+  sort -z | xargs -r0 cat 1<> out
+
+### scp in background ###
+1>
+$ nohup scp file_to_copy user@server:/path/to/copy/the/file > nohup.out 2>&1
+if it prompts for password then enter password.
+Then press ctrl + z which will temporarily suspend the command,
+
+
+SCP will give output:
+[1]+  Stopped   scp file_to_copy user@server:/path/to/copy/the/file > nohup.out 2>&1
+
+
+2>
+then enter the command:
+$ bg
+This will start executing the command in backgroud
+
+
+SCP will give output:
+[1]+ scp file_to_copy user@server:/path/to/copy/the/file > nohup.out 2>&1
+
+
+
+
+3>
+To see what background process that is running you can type command:
+
+
+$ jobs
+SCP will give output:
+[1]+  Running  scp file_to_copy user@server:/path/to/copy/the/file > nohup.out 2>&1
+
+
+
+###### Did SGE kill my job, and if so, why?
+
+Lets say your job ID is 398521. First, get the job details:
+
+qacct -j 398521
+
+Look at the output for a field called "failed" in column 1, and see if there is a value set (in integer error number). If so, SGE may have killed your job. Depending on which version of SGE you have, there may also be a human readable error message after the error number, i.e. "failed 37 : qmaster enforced h_rt, h_cpu, or h_vmem limit". Since we have switched to SGE 8.1.8, this human readable message is also output. To see why exactly SGE may have killed it, you can look a log file I'll talk about below.  First, you must find out what host the job ran on. That is also in the output of qacct, so look for a field in column 1 named "hostname", and grab the value stored there.  For this example, lets say the hostname on which the job ran was scg3-1-3.local. Then, the path to the log file is given below in the few lines of BASH code:
+
+hostname=scg3-1-3   #note that I stripped off the extension of the host name
+
+logfile=${SGE_ROOT}/${SGE_CELL}/spool/${hostname}/messages
+
+Open the log file and see what the message for your job ID is.  I'll demonstrate doing this in VIM:
+
+1) vim $logfile        #open the file
+
+2) :$                       #go to end of file
+
+3) ?398521            #search for the job ID, starting from the bottom of the file
+
+If you have a hit in your search, you'll see the reason, i.e. 04/13/2015 20:20:12| main|scg3-1-3|W|job 398521 exceeded hard wallclock time - initiate terminate method
+
+
+### linux local copy ###
+apt-get source PACKAGE
+./configure --prefix=$HOME/myapps
+make
+make install
+
+The binary would then be located in ~/myapps/bin. So, add export PATH="$HOME/myapps/bin:$PATH" to your .bashrc file and reload the .bashrc file with source ~/.bashrc. Of course, this assumes that gcc is installed on the system.
+
+
+### linux version ###
+cat /etc/system-release
+
+### substr ###
+awk '{print substr($2,3)   }' temp   #returns od
+
+### find | scp ###
+find . -name "*" -exec scp '{}' phogan@computer/directory ';'
+
+normally i would 'tar' all the files together into one huge blob and call 'scp' just once. something like this:
+
+tar czfv - file1 file2 dir1 dir2 | ssh phogan@computer/ tar xvzf - -C directory
+
+one could play around with the --exclude= or --include= parameters of tar. another option would be to use rsync.
+
+### select row in awk ###
+awk 'FNR == 2 {print}'
+
+### filename is saved in $FILENAME ###
+find /srv/gsfs0/projects/levinson/CP/2D_RNAseq/STAR -name "*.final.out" \
+    -exec awk 'FNR == 9 {print FILENAME"\t"$6}'  {} \; | \
+    awk '{split($1, temp1, "/"); split(temp1[9], temp2, "_"); print temp2[1]"\t"$2}'
+
+
+### yum ###
+yum provides \*/libgtk-x11-2.0.so.0
+yum list available
+
+### awk print tab delimited ###
+awk 'BEGIN { FS = "," }; {$4="tRNA"; print}' /home/xwzhu/transfer/BulkSeq/adult/150528_H5FTW_H0324_5_L004/retro_tRNA/150528_H5FTW_H0324_5_L004.discover | less
+
+### awk if not ###
+awk '{if ($1 != "test") print}'
+awk '{if ($1 !~ "test") print}'
+
+
+### check file sizes ###
+ls -alR Project_VAC_01280_BwaMem_WGS/ | grep -v '^d' | awk '{total += $5} END {print "Total:", total}'
+
+ls -alR Project_VAC_11577_B01_GRM_Targeted.2016-05-19/ | grep -v '^d' | awk '{total += $5} END {print "Total:", total}'
+
+ls -alR ./ | grep -v '^d' | awk '{total += $5} END {print "Total:", total}'
+
+ find ./ -maxdepth 1 -mindepth 1 | sort | xargs -i /home/txw/MEI/common/folder.size.pl {}
+
+find ./ -name "*recal.sorted.bam" -print0 | xargs -0 ls -alR | grep -v '^d' | awk '{total += $5} END {print "Total:", total}'
+find ./*/GATK/BAM/ -name "*recal.sorted.bam" -print0 | xargs -0 ls -alR | grep -v '^d' | awk '{total += $5} END {print "Total:", total}'
+
+### check file size on a MAC ###
+find . -type f -exec ls -l {} \; | awk '{sum += $5} END {print sum}'
+
+
+### sort processes by CPU usage ###
+ps -eo pcpu,pid,user,args | sort -k1 -r | head -10
+
+### unlink R image ###
+unlink(".RData")
+
+### draw mean and stderr in R ###
+x = 1:46
+CI.up = inner.mean+inner.stderr
+CI.dn = inner.mean-inner.stderr
+plot(inner.mean~x, cex=1.5,xaxt='n',ylim=c(0.003,0.02), xlab='',ylab='lalala!', main='blahblahblah',col='blue',pch=16)
+axis(1, at=x, labels=names)
+arrows(x,CI.dn,x,CI.up,code=3,length=0.2,angle=90,col='red')
+legend("bottomleft",paste(names,": S.E=",data$se),ncol=6,text.width=1)
+
+### tail ###
+$ tail great-big-file.log
+< Last 10 lines of great-big-file.log >
+
+If you really need to SKIP a particular number of lines, use
+
+$ tail -n +<N+1> <filename>
+< filename, excluding first N lines. >
+
+That is, if you want to skip N lines, you start printing line N+1. Example:
+
+$ tail -n +11 /tmp/myfile
+< /tmp/myfile, starting at line 11, or skipping the first 10 lines. >
+
+If you want to just see the last so many lines, omit the "+":
+
+$ tail -n <N> <filename>
+< last N lines of file. >
+
+
+### insert header row ###
+awk 'BEGIN{print "START"}; {print}; END{print "END"}'
+
+### replace multiple spaces ###
+tr -s " " "\t" < supple.sam > s2.sam
+
+### compare consequetive rows ###
+awk '
+    # Starting with the 2nd line, compare the current line with the previous one
+    # and, if it differs, print the *previous* line along with its line index.
+  NR>1 && $0 != prev { print NR-1, prev }
+    # Save the current line for the next iteration.
+  {prev=$0}
+    # Output the final line, whose following - non-existent - line is by
+    # by definition always different.
+  END { print NR, $0 }
+  ' file
+# unique rows #
+awk '$0!=f && NR>1 {print f} {f=$0} END {print $0}' 81784.namesorted.sam > 81784.uniq.sam
+
+# identical rows #
+awk '$0==f && NR>1 {print f} {f=$0} END {print $0}' 81784.namesorted.sam > 81784.uniq.sam
+
+### paste \# in vi ###
+:set paste (do not add # automatically)
+:set nopaste
+
+### replace file names in batch ###
+find . -name 'E008*.bigwig' -type f -exec bash -c 'mv "$1" "${1/E008/H01-E008}"' -- {} \;
+find . -name '123*.txt' -type f -exec bash -c 'mv "$1" "${1/\/123_//}"' -- {} \;
+find . -name '123*.txt' -type f -exec bash -c 'mv "$1" "${1/\/123_/hello/}"' -- {} \;
+
+### R memory limit ###
+memory.limit(2048) to change the memory limit to 2 Gb.)
+
+### Bix3 login fix ###
+cp ~/.ssh/known_hosts ./known_hosts_backup
+#delete all rows containing bix3 #
+sed -e '/bix3/d' ./known_hosts_backup > ~/.ssh/known_hosts
+
+### count the number of occurences per line ###
+awk -F 'pe' '{print NF-1, $0}'  NA12878.LINE.SR.PE.calls | less
+
+### compare two txt files ###
+vim -d file1.txt file2.txt
+
+### qlogin to specific node ###
+qlogin -l h=scg3-2-1.local
+
+### find not ###
+find ./ -name "*.recal.sorted.bam" -not -name "*hg38*"
+
+### 2x2 table ###
+```
+Convictions <- matrix(c(2, 15, 10, 3), nrow = 2,
+           dimnames =
+        list(c("Dizygotic", "Monozygotic"),
+        c("Convicted", "Not convicted")))
+fisher.test(Convictions, alternative = "less")
+```
+
+### quota on scg4 ###
+`
+/usr/lpp/mmfs/bin/mmlsquota -j projects.levinson gsfs0 --block-size auto
+`
+
+### awk XOR ###
+```
+strand=$1
+awk -v str=$strand '{ if (xor(str,($1>$2))) print $0"\t"str}' ./test.txt
+```
+
+### map to Alu consensus ###
+```
+/home/xwzhu/levinson/exonerate/exonerate \
+   --bestn 1 --model affine:local \
+   --ryo "INFO: %qi %qal %pi %tS %ti %qab %qae %tab %tae %tas\n" \
+   ./AluYd8.fa \
+   /home/xwzhu/levinson/retro_camal2/refTE/sequence/ALU.fa
+
+/home/xwzhu/levinson/exonerate/exonerate \
+   --bestn 1 --model affine:local \
+   --ryo "INFO: %qi %qal %pi %tS %ti %qab %qae %tab %tae %tas\n" \
+   ./test.fa \
+   /home/xwzhu/levinson/retro_camal2/refTE/sequence/ALU.fa
+```
+
+### Blat alignment ###
+```
+module load blat
+blat \
+   -t=dna \
+   -q=dna \
+   -out=blast \
+  ./ref.fa
+  ./test.fa \
+   ./test.hg38.align
+
+blat \
+   -t=dna \
+   -q=dna \
+   -ooc=/home/xwzhu/levinson/human_ref_hg38/hg38.11.ooc \
+   /home/xwzhu/levinson/human_ref_hg38/hg38.2bit \
+   -out=blast \
+   ./test.fa \
+   ./test.blat.hg38.align
+```
+
+#$ -hold_jid SRMatrix
+
+### pattern match in R ###
+```
+no316 <- subset(all316, !grepl("MDA", all316$sample))
+```
+
+### multi-line histogram ###
+```
+oc <- read.table("/home/txw/R1000pipe/plots/reads/mapped.loc.ratio", header=TRUE, sep="\t")
+c <- hist(loc[,2], breaks=seq(0,1,0.02))
+u <- hist(loc[,3], breaks=seq(0,1,0.02))
+i1 <- hist(loc[,4], breaks=seq(0,1,0.02))
+i2 <- hist(loc[,5], breaks=seq(0,1,0.02))
+
+coding <- c$density
+utr <- u$density
+intronic <- i1$density
+intergenic <- i2$density
+
+pdf("/home/txw/R1000pipe/plots/fix/Sfig6. mapped.location.histogram.pdf")
+par(cex.axis=1.5, cex.lab=1.35, cex.main=1.2, cex.sub=1.5)
+plot(c(0,1), c(0, 20), type="n", main="Distribution of mapped base", xlab="Fraction of mapped base", ylab="Density")
+lines(c$mids, coding, col=1, lwd=2)
+lines(c$mids, utr, col=2, lwd=2)
+lines(c$mids, intronic, col=3, lwd=2)
+lines(c$mids, intergenic, col=4, lwd=2)
+
+legend(0.65,20, c("Coding","UTR", "Intronic", "Intergenic"), lty=c(1,1,1,1), cex=c(1.4,1.4,1.4,1.4), lwd=c(2,2,2,2),col=c(1,2,3,4))
+dev.off()
+```
+
+### SGE qsub header ###
+```
+#! /bin/sh
+#
+#$ -N CpG
+#
+#$ -cwd
+#$ -l h_rt=6:00:00
+#$ -l s_rt=6:00:00
+#$ -l h_vmem=10G
+#$ -j y
+#
+#$ -S /bin/bash
+#
+module load samtools
+module load bedtools
+```
+
+### split sam to smaller file ###
+I actually end up doing this with some regularity, so here's a smooth all-in-one method:
+```
+samtools view -H yourfile.bam > header
+```
+then
+```
+samtools view yourfile.bam | split - yourprefix -l 8000000 --filter='cat header - > $FILE.sam'
+```
+or
+```
+samtools view yourfile.bam | split - yourprefix -l 8000000 --filter='cat header - | samtools view -b - > $FILE.bam'
+```
+
+### slurm cluster load ###
+`sinfo --format="%C"`
+
+### Git commit from cluster to github ###
+```
+git init
+git add LINE
+git commit -m "LINE commit"
+git remote add origin https://github.com/XiaoweiZhuJJ/RetroSOM.git
+git push -u origin master
+# account XiaoweiZhuJJ # # Pass gh#5#5 #
+```
+
+### git backup ###
+```
+git add -A
+git commit -a -m "back up vXX"
+git push origin master
+```
+
+### pull from github to cluster ###
+git clone https://github.com/XiaoweiZhuJJ/learning.git
+
+### slurm finished job status ###
+```
+sacct -o reqmem,maxrss,averss,elapsed -j 33445
+```
+
+### Slurm checking submitted jobs ###
+```
+squeue -u xwzhu -o "%.18i %.8j %.8u %.2t %.10M %.6D %V %c %m"
+```
+
+### Slurm job dependency ###
+As far as I know is has to be job ID. If you are submitting a series of jobs from a script, you can capture that to use like this
+```
+JOBID=$(sbatch --time=1:00 --wrap "sleep 10" | awk '{print $4}')
+JOBID1=$(sbatch --time=1:00 --dependency=after:$JOBID0 --wrap "sleep 20"
+```
+
+### Slurm interactive job ###
+```
+srun --pty --time=1-00:00:00 --account=default --partition=interactive --nodes=1 --mem=10gb bash -l
+srun --x11 --pty --time=1-00:00:00 --account=default --partition=interactive --nodes=1 --mem=10gb bash -l
+```
+
+### perl on slurm ###
+```
+module load perl-scg/5.14.4
+#!/usr/bin/env perl
+use warnings;
+use strict;
+```
+### confirm bash rm ###
+```
+function rm2()
+{
+    if (( $# > 1 )); then
+        read -r -p "sure? [y/n] " response
+        case $response in
+            [yY])
+                command rm "$@"
+                ;;
+            *)
+                echo "ignored"
+
+                ;;
+        esac
+    else
+        command rm "$@"
+    fi
+}
+```
+### unload package in R ###
+unloadNamespace()

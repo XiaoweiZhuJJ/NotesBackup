@@ -1,0 +1,239 @@
+library("ggplot2")
+### titration ###
+```
+names <- c("Adult", "NA19240", "HG00514", "HG00733", "BSM", "NA12877", "NA12878")
+freq <- c(0.0004, 0.002, 0.01, 0.01, 0.05, 0.25, 0.6776)
+titr <-data.frame(names, freq)
+freq.lab <- c("0.04%","0.2%","1%", "1%","5%", "25%", "67.76%")
+ggplot(titr, aes(x=names, y=freq)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    scale_x_discrete(limits=c("Adult", "NA19240", "HG00514", "HG00733", "BSM", "NA12877", "NA12878")) +
+    scale_y_continuous(limits = c(0, 0.7), breaks=c(0.2, 0.4, 0.6), labels=c("20%","40%","60%")) +
+    geom_text(aes(label=freq.lab), vjust=-1, color="black",
+              position = position_dodge(0.9), size=5) +
+    xlab("Genomic DNA") +
+    ylab("Percentage") +
+    theme(axis.text=element_text(size=18),
+    axis.title=element_text(size=24,face="bold"),
+    axis.text.x=element_text(angle=30, hjust=1))
+ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/titration.pdf")
+```
+
+### unique L1/Alu ###
+names <- c("Adult", "NA19240", "HG00514", "HG00733", "BSM", "NA12877", "NA12878")
+L1 <- c(11, 87, 34, 22, 18, 21, 16)
+Alu <- c(116, 600, 143, 121,101,116,115)
+TEuniq <- data.frame(names, L1, Alu)
+dat.m <- melt(TEuniq,id.vars='names', measure.vars=c('L1','Alu')
+names(dat.m) <- c("names", "TE", "value")
+ggplot(dat.m, aes(x=names, y=value, fill=TE)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+    xlab("Genomic DNA") +
+    ylab("Unique insertions") +
+    scale_x_discrete(limits=c("Adult", "NA19240", "HG00514", "HG00733", "BSM", "NA12877", "NA12878")) +
+    scale_y_log10(breaks=c(1, 10, 20, 40, 80, 160, 320, 640), limits=c(1,640)) +
+    theme(legend.text=element_text(size=16),legend.title=element_text(size=18,face="bold")) +
+    theme(axis.text=element_text(size=18),
+        axis.title=element_text(size=24,face="bold"))
+ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/unique_TE.pdf")
+# 12.6 x 7
+
+### Figure 2 Alu ###
+no320  <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/Alu/strand/09_comb_SR_PE/noMDA.v42.txt", header=F, sep="\t")
+no320F1 <- 2*no320[,2]*no320[,5] / (no320[,2]+no320[,5])
+no320F2 <- 2*no320[,3]*no320[,6] / (no320[,3]+no320[,6])
+no320F3 <- 2*no320[,4]*no320[,7] / (no320[,4]+no320[,7])
+no320Alu <- no320[,8]
+
+no316  <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/Alu/strand/09_comb_SR_PE/noMDA.v42.txt", header=F, sep="\t")
+no316F1 <- 2*no316[,2]*no316[,5] / (no316[,2]+no316[,5])
+no316F2 <- 2*no316[,3]*no316[,6] / (no316[,3]+no316[,6])
+no316F3 <- 2*no316[,4]*no316[,7] / (no316[,4]+no316[,7])
+no316Alu <- no316[,8]
+
+mda316 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/Alu/strand/09_comb_SR_PE/MDA.v42.txt", header=F, sep="\t")
+mda316F1 <- 2*mda316[,2]*mda316[,5] / (mda316[,2]+mda316[,5])
+mda316F2 <- 2*mda316[,3]*mda316[,6] / (mda316[,3]+mda316[,6])
+mda316F3 <- 2*mda316[,4]*mda316[,7] / (mda316[,4]+mda316[,7])
+mda316Alu <- mda316[,8]
+
+### sensitivity ###
+library("ggplot2")
+sens <- c()
+sens316m <- data.frame(rep("316MDA", 5), mda316[,4])
+names(sens316m) <- c("subject", "sensitivity")
+sens316n <- data.frame(rep("316noMDA", 10), no316[,4])
+names(sens316n) <- c("subject", "sensitivity")
+sens320n <- data.frame(rep("320noMDA", 53), no320[,4])
+names(sens320n) <- c("subject", "sensitivity")
+sens <- rbind(sens316m, sens316n, sens320n)
+sum_sens <- summarySE(sens, measurevar="sensitivity", groupvars=c("subject"))
+
+ggplot(sum_sens, aes(x=subject, y=sensitivity, fill=subject)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+        geom_errorbar(aes(ymin=sensitivity-ci, ymax=sensitivity+ci),
+                  size=1,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Test datasets") +
+    ylab("Sensitivity") +
+    guides(fill=FALSE) +
+    scale_y_continuous(limits = c(0, 1.05), breaks=c(0.2, 0.4, 0.6, 0.8, 1)) +
+    theme(axis.text=element_text(size=18),
+        axis.title=element_text(size=24,face="bold"))
+ggsave("/home/xwzhu/levinson/MEI_plots/Alu_sensitvity_v41.pdf")
+
+### precision ###
+prec<- c()
+prec316m <- data.frame(rep("316MDA", 5), mda316[,7])
+names(prec316m) <- c("subject", "precision")
+prec316n <- data.frame(rep("316noMDA", 10), no316[,7])
+names(prec316n) <- c("subject", "precision")
+prec320n <- data.frame(rep("320noMDA", 53), no320[,7])
+names(prec320n) <- c("subject", "precision")
+prec <- rbind(prec316m, prec316n, prec320n)
+sum_prec <- summarySE(prec, measurevar="precision", groupvars=c("subject"))
+
+ggplot(sum_prec, aes(x=subject, y=precision, fill=subject)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+        geom_errorbar(aes(ymin=precision-ci, ymax=precision+ci),
+                  size=1,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Test datasets") +
+    ylab("Precision") +
+    guides(fill=FALSE) +
+    scale_y_continuous(limits = c(0, 1.05), breaks=c(0.2, 0.4, 0.6, 0.8, 1)) +
+    theme(axis.text=element_text(size=18),
+        axis.title=element_text(size=24,face="bold"))
+ggsave("/home/xwzhu/levinson/MEI_plots/Alu_precision_v41.pdf")
+
+### false positives ###
+FP316m <- data.frame(rep("316MDA", 5), mda316Alu)
+names(FP316m) <- c("subject", "FP")
+FP316n <- data.frame(rep("316noMDA", 10), no316Alu)
+names(FP316n) <- c("subject", "FP")
+FP320n <- data.frame(rep("320noMDA", 53), no320Alu)
+names(FP320n) <- c("subject", "FP")
+FP <- rbind(FP316m, FP316n, FP320n)
+
+ggplot(FP, aes(subject, FP, color=subject)) +
+   geom_jitter(width = 0.15, ,show.legend=F) +
+   theme(axis.text=element_text(size=18),
+       axis.title=element_text(size=24,face="bold")) +s
+   xlab("Test datasets") +
+   ylab("False positives") +
+   scale_y_continuous(limits = c(-2, 150), breaks=c(0, 10, 25, 50, 75, 150))
+ggsave("/home/xwzhu/levinson/MEI_plots/Alu_FP_v41.pdf")
+
+### figure 3 L1 ###
+library("ggplot2")
+dat <- read.table("/Users/xiaoweizhu/Documents/MEI/titration/400X/L1_stats.txt", header=T, sep="\t")
+sens <- dat[,1:3]
+prec <- dat[,-3]
+sens$Depth <- as.factor(sens$Depth)
+prec$Depth <- as.factor(prec$Depth)
+
+ggplot(data=sens, aes(x=Freq, y=Sensitivity, group=Depth)) +
+  geom_line(aes(color=Depth)) +
+  geom_point(aes(color=Depth,shape=Depth),size=4) +
+  scale_shape_manual(values=c(1, 3, 16, 17)) +
+  xlab("Titration level (%)") +
+  ylab("Sensitivity (L1)") +
+  scale_x_log10(breaks=c(0.04, 0.2, 1, 5, 25), limits=c(0.04,25)) +
+  scale_y_continuous(limits = c(0, 1), breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  theme(axis.text=element_text(size=18),
+      axis.title=element_text(size=24,face="bold")) +
+  theme(legend.justification = c(0, 1), legend.position = c(0, 1)) +
+  theme(legend.text=element_text(size=16),legend.title=element_text(size=18,face="bold"))
+ ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/Titration_sens_L1.pdf",useDingbats=FALSE)
+
+
+ ggplot(data=prec, aes(x=Freq, y=Precision, group=Depth)) +
+   geom_line(aes(color=Depth)) +
+   geom_point(aes(color=Depth, shape=Depth),size=4) +
+   scale_shape_manual(values=c(1, 3, 16, 17)) +
+   xlab("Titration level (%)") +
+   ylab("Precision (L1)") +
+   scale_x_log10(breaks=c(0.04, 0.2, 1, 5, 25), limits=c(0.02,50)) +
+   scale_y_continuous(limits = c(-0.05, 1.05), breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+   theme(axis.text=element_text(size=18),
+       axis.title=element_text(size=24,face="bold")) +
+   theme(legend.justification = c(0, 1), legend.position = c(0, 1)) +
+   theme(legend.text=element_text(size=16),legend.title=element_text(size=18,face="bold"))
+  ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/Titration_prec_L1.pdf",useDingbats=FALSE)
+
+### False positives ###
+names<- c("No filter\n>=1read", "No filter\n>=2reads", "RetroSOM\n>=1read", "RetroSOM\n>=2reads")
+FP <- c(66553,2159,308, 1)
+falseP<-data.frame(names,FP)
+ggplot(falseP, aes(x=names, y=FP)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    scale_x_discrete(limits=c("No filter\n>=1read", "No filter\n>=2reads", "RetroSOM\n>=1read", "RetroSOM\n>=2reads")) +
+    scale_y_log10(breaks=c(1, 100, 1000, 10000, 100000), limits=c(1,100000)) +
+    geom_text(aes(label=FP), vjust=-1, color="black",
+              position = position_dodge(0.9), size=5) +
+    xlab("Stringency") +
+    ylab("False positives (L1)") +
+    theme(axis.text=element_text(size=18),
+    axis.title=element_text(size=24,face="bold"))
+ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/Titration_FP_L1.pdf",useDingbats=FALSE)
+
+### figure 3 Alu ###
+library("ggplot2")
+dat <- read.table("/Users/xiaoweizhu/Documents/MEI/titration/400X/Alu_stats.txt", header=T, sep="\t")
+sens <- dat[,1:3]
+prec <- dat[,-3]
+sens$Depth <- as.factor(sens$Depth)
+prec$Depth <- as.factor(prec$Depth)
+
+ggplot(data=sens, aes(x=Freq, y=Sensitivity, group=Depth)) +
+  geom_line(aes(color=Depth)) +
+  geom_point(aes(color=Depth,shape=Depth),size=4) +
+  scale_shape_manual(values=c(1, 3, 16, 17)) +
+  xlab("Titration level (%)") +
+  ylab("Sensitivity (Alu)") +
+  scale_x_log10(breaks=c(0.04, 0.2, 1, 5, 25), limits=c(0.04,25)) +
+  scale_y_continuous(limits = c(0, 1), breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  theme(axis.text=element_text(size=18),
+      axis.title=element_text(size=24,face="bold")) +
+  theme(legend.justification = c(0, 1), legend.position = c(0, 1)) +
+  theme(legend.text=element_text(size=16),legend.title=element_text(size=18,face="bold"))
+ ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/Titration_sens_Alu.pdf",useDingbats=FALSE)
+
+
+ ggplot(data=prec, aes(x=Freq, y=Precision, group=Depth)) +
+   geom_line(aes(color=Depth)) +
+   geom_point(aes(color=Depth, shape=Depth),size=4) +
+   scale_shape_manual(values=c(1, 3, 16, 17)) +
+   xlab("Titration level (%)") +
+   ylab("Precision (Alu)") +
+   scale_x_log10(breaks=c(0.04, 0.2, 1, 5, 25), limits=c(0.02,50)) +
+   scale_y_continuous(limits = c(-0.05, 1.05), breaks=c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+   theme(axis.text=element_text(size=18),
+       axis.title=element_text(size=24,face="bold")) +
+   theme(legend.justification = c(0, 1), legend.position = c(0, 1)) +
+   theme(legend.text=element_text(size=16),legend.title=element_text(size=18,face="bold"))
+  ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/Titration_prec_Alu.pdf",useDingbats=FALSE)
+
+### False positives ###
+names<- c("No filter\n>=1read", "No filter\n>=2reads", "RetroSOM\n>=1read", "RetroSOM\n>=2reads")
+FP <- c(147595,5235,2348,6)
+falseP<-data.frame(names,FP)
+ggplot(falseP, aes(x=names, y=FP)) +
+    geom_bar(stat="identity", fill="steelblue") +
+    scale_x_discrete(limits=c("No filter\n>=1read", "No filter\n>=2reads", "RetroSOM\n>=1read", "RetroSOM\n>=2reads")) +
+    scale_y_log10(breaks=c(1, 100, 1000, 10000, 100000), limits=c(1,200000)) +
+    geom_text(aes(label=FP), vjust=-1, color="black",
+              position = position_dodge(0.9), size=5) +
+    xlab("Stringency") +
+    ylab("False positives (Alu)") +
+    theme(axis.text=element_text(size=18),
+    axis.title=element_text(size=24,face="bold"))
+ggsave("/Users/xiaoweizhu/Documents/MEI_slides/Figures/components/Titration_FP_Alu.pdf",useDingbats=FALSE)

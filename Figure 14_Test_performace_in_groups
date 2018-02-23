@@ -1,0 +1,406 @@
+### panel A training ###
+summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
+                      conf.interval=.95, .drop=TRUE) {
+    library(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 <- function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac <- ddply(data, groupvars, .drop=.drop,
+      .fun = function(xx, col) {
+        c(N    = length2(xx[[col]], na.rm=na.rm),
+          mean = mean   (xx[[col]], na.rm=na.rm),
+          sd   = sd     (xx[[col]], na.rm=na.rm)
+        )
+      },
+      measurevar
+    )
+
+    # Rename the "mean" column
+    datac <- rename(datac, c("mean" = measurevar))
+
+    datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval:
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult <- qt(conf.interval/2 + .5, datac$N-1)
+    datac$ci <- datac$se * ciMult
+
+    return(datac)
+}
+library(ggplot2)
+
+### L1 ###
+g1 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G1.stats.txt", sep=" ", header=F)
+g2 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G2.stats.txt", sep=" ", header=F)
+g3 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G3.stats.txt", sep=" ", header=F)
+g4 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G4.stats.txt", sep=" ", header=F)
+g5 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G5.stats.txt", sep=" ", header=F)
+g6 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G6.stats.txt", sep=" ", header=F)
+g8 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G8.stats.txt", sep=" ", header=F)
+g9 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/G9.stats.txt", sep=" ", header=F)
+t2 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/T2.stats.txt", sep=" ", header=F)
+t3 <- read.table("/home/xwzhu/Platium/hg38/RF41/stat/T3.stats.txt", sep=" ", header=F)
+### Alu ###
+a7 <- read.table("/home/xwzhu/Platium/hg38/RF42/stat/A7.stats.txt", sep=" ", header=F)
+a8 <- read.table("/home/xwzhu/Platium/hg38/RF42/stat/A8.stats.txt", sep=" ", header=F)
+s7 <- read.table("/home/xwzhu/Platium/hg38/RF42/stat/S7.stats.txt", sep=" ", header=F)
+
+platinum <- c()
+sensg1 <- data.frame(rep("L1PE ACAG", 11), rep("sensitivity", 11), g1[,2])
+sensg2 <- data.frame(rep("L1PE TAG", 11), rep("sensitivity", 11), g2[,2])
+sensg3 <- data.frame(rep("L1PE ORF", 11), rep("sensitivity", 11), g3[,2])
+sensg4 <- data.frame(rep("L1PE rest", 11), rep("sensitivity", 11), g4[,2])
+sensg5 <- data.frame(rep("L1PE GC5389", 11), rep("sensitivity", 11), g5[,2])
+sensg6 <- data.frame(rep("L1PE 5533", 11), rep("sensitivity", 11), g6[,2])
+sensg8 <- data.frame(rep("L1PE AT5710", 11), rep("sensitivity", 11), g8[,2])
+sensg9 <- data.frame(rep("L1PE SpltAnch", 11), rep("sensitivity", 11), g9[,2])
+senst2 <- data.frame(rep("L1PE SR old", 11), rep("sensitivity", 11), t2[,2])
+senst3 <- data.frame(rep("L1PE SR new", 11), rep("sensitivity", 11), t3[,2])
+sensa7 <- data.frame(rep("Alu PE SpltAnch", 11), rep("sensitivity", 11), a7[,2])
+sensa8 <- data.frame(rep("Alu PE noSplit", 11), rep("sensitivity", 11), a8[,2])
+senss7 <- data.frame(rep("Alu SR", 11), rep("sensitivity", 11), s7[,2])
+
+precg1 <- data.frame(rep("L1PE ACAG", 11), rep("precision", 11), g1[,3])
+precg2 <- data.frame(rep("L1PE TAG", 11), rep("precision", 11), g2[,3])
+precg3 <- data.frame(rep("L1PE ORF", 11), rep("precision", 11), g3[,3])
+precg4 <- data.frame(rep("L1PE rest", 11), rep("precision", 11), g4[,3])
+precg5 <- data.frame(rep("L1PE GC5389", 11), rep("precision", 11), g5[,3])
+precg6 <- data.frame(rep("L1PE 5533", 11), rep("precision", 11), g6[,3])
+precg8 <- data.frame(rep("L1PE AT5710", 11), rep("precision", 11), g8[,3])
+precg9 <- data.frame(rep("L1PE SpltAnch", 11), rep("precision", 11), g9[,3])
+prect2 <- data.frame(rep("L1PE SR old", 11), rep("precision", 11), t2[,3])
+prect3 <- data.frame(rep("L1PE SR new", 11), rep("precision", 11), t3[,3])
+preca7 <- data.frame(rep("Alu PE SpltAnch", 11), rep("precision", 11), a7[,3])
+preca8 <- data.frame(rep("Alu PE noSplit", 11), rep("precision", 11), a8[,3])
+precs7 <- data.frame(rep("Alu SR", 11), rep("precision", 11), s7[,3])
+
+names(sensg1) <- c("category", "performance", "score")
+names(sensg2) <- c("category", "performance", "score")
+names(sensg3) <- c("category", "performance", "score")
+names(sensg4) <- c("category", "performance", "score")
+names(sensg5) <- c("category", "performance", "score")
+names(sensg6) <- c("category", "performance", "score")
+names(sensg8) <- c("category", "performance", "score")
+names(sensg9) <- c("category", "performance", "score")
+names(senst2) <- c("category", "performance", "score")
+names(senst3) <- c("category", "performance", "score")
+names(sensa7) <- c("category", "performance", "score")
+names(sensa8) <- c("category", "performance", "score")
+names(senss7) <- c("category", "performance", "score")
+
+names(precg1) <- c("category", "performance", "score")
+names(precg2) <- c("category", "performance", "score")
+names(precg3) <- c("category", "performance", "score")
+names(precg4) <- c("category", "performance", "score")
+names(precg5) <- c("category", "performance", "score")
+names(precg6) <- c("category", "performance", "score")
+names(precg8) <- c("category", "performance", "score")
+names(precg9) <- c("category", "performance", "score")
+names(prect2) <- c("category", "performance", "score")
+names(prect3) <- c("category", "performance", "score")
+names(preca7) <- c("category", "performance", "score")
+names(preca8) <- c("category", "performance", "score")
+names(precs7) <- c("category", "performance", "score")
+
+platinum <- rbind(sensg1, sensg2, sensg3, sensg4, sensg5, sensg6, sensg8, sensg9, senst2, senst3, sensa7, sensa8, senss7, precg1, precg2, precg3, precg4, precg5, precg6, precg8, precg9, prect2, prect3, preca7, preca8, precs7)
+errPlat <- summarySE(platinum, measurevar="score", groupvars=c("category","performance"),na.rm=TRUE)
+
+ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+        geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
+                  size=1,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Modeling subgroup") +
+    ylab("Performance score") +
+    theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=20,face="bold"),
+        axis.text.x=element_text(angle=30, hjust=1)) +
+    theme(legend.title=element_text(size=16),
+        legend.text=element_text(size=14))
+ggsave("/home/xwzhu/levinson/MEI_plots/test_performance_training.pdf", useDingbats=FALSE, width=20, height=7)
+
+### 320 ###
+g1 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G1.txt", sep=" ", header=F)
+g2 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G2.txt", sep=" ", header=F)
+g3 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G3.txt", sep=" ", header=F)
+g4 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G4.txt", sep=" ", header=F)
+g5 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G5.txt", sep=" ", header=F)
+g6 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G6.txt", sep=" ", header=F)
+g8 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G8.txt", sep=" ", header=F)
+g9 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.G9.txt", sep=" ", header=F)
+t2 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.T2.txt", sep=" ", header=F)
+t3 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF41/noMDA/LINE.T3.txt", sep=" ", header=F)
+a7 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF42/noMDA/ALU.A7.txt", sep=" ", header=F)
+a8 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF42/noMDA/ALU.A8.txt", sep=" ", header=F)
+s7 <- read.table("/home/xwzhu/transfer/Project_VAC_10942_B01_GRM_WGS.2015-09-18/hg38/RF42/noMDA/ALU.T7.txt", sep=" ", header=F)
+
+platinum <- c()
+sensg1 <- data.frame(rep("L1PE ACAG", 53), rep("sensitivity", 53), g1[,2])
+sensg2 <- data.frame(rep("L1PE TAG", 53), rep("sensitivity", 53), g2[,2])
+sensg3 <- data.frame(rep("L1PE ORF", 53), rep("sensitivity", 53), g3[,2])
+sensg4 <- data.frame(rep("L1PE rest", 53), rep("sensitivity", 53), g4[,2])
+sensg5 <- data.frame(rep("L1PE GC5389", 53), rep("sensitivity", 53), g5[,2])
+sensg6 <- data.frame(rep("L1PE 5533", 53), rep("sensitivity", 53), g6[,2])
+sensg8 <- data.frame(rep("L1PE AT5710", 53), rep("sensitivity", 53), g8[,2])
+sensg9 <- data.frame(rep("L1PE SpltAnch", 53), rep("sensitivity", 53), g9[,2])
+senst2 <- data.frame(rep("L1PE SR old", 53), rep("sensitivity", 53), t2[,2])
+senst3 <- data.frame(rep("L1PE SR new", 53), rep("sensitivity", 53), t3[,2])
+sensa7 <- data.frame(rep("Alu PE SpltAnch", 53), rep("sensitivity", 53), a7[,2])
+sensa8 <- data.frame(rep("Alu PE noSplit", 53), rep("sensitivity", 53), a8[,2])
+senss7 <- data.frame(rep("Alu SR", 53), rep("sensitivity", 53), s7[,2])
+
+precg1 <- data.frame(rep("L1PE ACAG", 53), rep("precision", 53), g1[,3])
+precg2 <- data.frame(rep("L1PE TAG", 53), rep("precision", 53), g2[,3])
+precg3 <- data.frame(rep("L1PE ORF", 53), rep("precision", 53), g3[,3])
+precg4 <- data.frame(rep("L1PE rest", 53), rep("precision", 53), g4[,3])
+precg5 <- data.frame(rep("L1PE GC5389", 53), rep("precision", 53), g5[,3])
+precg6 <- data.frame(rep("L1PE 5533", 53), rep("precision", 53), g6[,3])
+precg8 <- data.frame(rep("L1PE AT5710", 53), rep("precision", 53), g8[,3])
+precg9 <- data.frame(rep("L1PE SpltAnch", 53), rep("precision", 53), g9[,3])
+prect2 <- data.frame(rep("L1PE SR old", 53), rep("precision", 53), t2[,3])
+prect3 <- data.frame(rep("L1PE SR new", 53), rep("precision", 53), t3[,3])
+preca7 <- data.frame(rep("Alu PE SpltAnch", 53), rep("precision", 53), a7[,3])
+preca8 <- data.frame(rep("Alu PE noSplit", 53), rep("precision", 53), a8[,3])
+precs7 <- data.frame(rep("Alu SR", 53), rep("precision", 53), s7[,3])
+
+names(sensg1) <- c("category", "performance", "score")
+names(sensg2) <- c("category", "performance", "score")
+names(sensg3) <- c("category", "performance", "score")
+names(sensg4) <- c("category", "performance", "score")
+names(sensg5) <- c("category", "performance", "score")
+names(sensg6) <- c("category", "performance", "score")
+names(sensg8) <- c("category", "performance", "score")
+names(sensg9) <- c("category", "performance", "score")
+names(senst2) <- c("category", "performance", "score")
+names(senst3) <- c("category", "performance", "score")
+names(sensa7) <- c("category", "performance", "score")
+names(sensa8) <- c("category", "performance", "score")
+names(senss7) <- c("category", "performance", "score")
+
+names(precg1) <- c("category", "performance", "score")
+names(precg2) <- c("category", "performance", "score")
+names(precg3) <- c("category", "performance", "score")
+names(precg4) <- c("category", "performance", "score")
+names(precg5) <- c("category", "performance", "score")
+names(precg6) <- c("category", "performance", "score")
+names(precg8) <- c("category", "performance", "score")
+names(precg9) <- c("category", "performance", "score")
+names(prect2) <- c("category", "performance", "score")
+names(prect3) <- c("category", "performance", "score")
+names(preca7) <- c("category", "performance", "score")
+names(preca8) <- c("category", "performance", "score")
+names(precs7) <- c("category", "performance", "score")
+
+platinum <- rbind(sensg1, sensg2, sensg3, sensg4, sensg5, sensg6, sensg8, sensg9, senst2, senst3, sensa7, sensa8, senss7, precg1, precg2, precg3, precg4, precg5, precg6, precg8, precg9, prect2, prect3, preca7, preca8, precs7)
+errPlat <- summarySE(platinum, measurevar="score", groupvars=c("category","performance"), na.rm=TRUE)
+
+ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+        geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
+                  size=1,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Modeling subgroup") +
+    ylab("Performance score") +
+    theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=20,face="bold"),
+        axis.text.x=element_text(angle=30, hjust=1)) +
+    theme(legend.title=element_text(size=16),
+        legend.text=element_text(size=14))
+ggsave("/home/xwzhu/levinson/MEI_plots/test_performance_320.pdf", useDingbats=FALSE, width=20, height=7)
+
+### 316 noMDA ###
+g1 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G1.txt", sep=" ", header=F)
+g2 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G2.txt", sep=" ", header=F)
+g3 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G3.txt", sep=" ", header=F)
+g4 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G4.txt", sep=" ", header=F)
+g5 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G5.txt", sep=" ", header=F)
+g6 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G6.txt", sep=" ", header=F)
+g8 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G8.txt", sep=" ", header=F)
+g9 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.G9.txt", sep=" ", header=F)
+t2 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.T2.txt", sep=" ", header=F)
+t3 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/noMDA/LINE.T3.txt", sep=" ", header=F)
+a7 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF42/noMDA/ALU.A7.txt", sep=" ", header=F)
+a8 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF42/noMDA/ALU.A8.txt", sep=" ", header=F)
+s7 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF42/noMDA/ALU.T7.txt", sep=" ", header=F)
+
+platinum <- c()
+sensg1 <- data.frame(rep("L1PE ACAG", 10), rep("sensitivity", 10), g1[,2])
+sensg2 <- data.frame(rep("L1PE TAG", 10), rep("sensitivity", 10), g2[,2])
+sensg3 <- data.frame(rep("L1PE ORF", 10), rep("sensitivity", 10), g3[,2])
+sensg4 <- data.frame(rep("L1PE rest", 10), rep("sensitivity", 10), g4[,2])
+sensg5 <- data.frame(rep("L1PE GC5389", 10), rep("sensitivity", 10), g5[,2])
+sensg6 <- data.frame(rep("L1PE 5533", 10), rep("sensitivity", 10), g6[,2])
+sensg8 <- data.frame(rep("L1PE AT5710", 10), rep("sensitivity", 10), g8[,2])
+sensg9 <- data.frame(rep("L1PE SpltAnch", 10), rep("sensitivity", 10), g9[,2])
+senst2 <- data.frame(rep("L1PE SR old", 10), rep("sensitivity", 10), t2[,2])
+senst3 <- data.frame(rep("L1PE SR new", 10), rep("sensitivity", 10), t3[,2])
+sensa7 <- data.frame(rep("Alu PE SpltAnch", 10), rep("sensitivity", 10), a7[,2])
+sensa8 <- data.frame(rep("Alu PE noSplit", 10), rep("sensitivity", 10), a8[,2])
+senss7 <- data.frame(rep("Alu SR", 10), rep("sensitivity", 10), s7[,2])
+
+precg1 <- data.frame(rep("L1PE ACAG", 10), rep("precision", 10), g1[,3])
+precg2 <- data.frame(rep("L1PE TAG", 10), rep("precision", 10), g2[,3])
+precg3 <- data.frame(rep("L1PE ORF", 10), rep("precision", 10), g3[,3])
+precg4 <- data.frame(rep("L1PE rest", 10), rep("precision", 10), g4[,3])
+precg5 <- data.frame(rep("L1PE GC5389", 10), rep("precision", 10), g5[,3])
+precg6 <- data.frame(rep("L1PE 5533", 10), rep("precision", 10), g6[,3])
+precg8 <- data.frame(rep("L1PE AT5710", 10), rep("precision", 10), g8[,3])
+precg9 <- data.frame(rep("L1PE SpltAnch", 10), rep("precision", 10), g9[,3])
+prect2 <- data.frame(rep("L1PE SR old", 10), rep("precision", 10), t2[,3])
+prect3 <- data.frame(rep("L1PE SR new", 10), rep("precision", 10), t3[,3])
+preca7 <- data.frame(rep("Alu PE SpltAnch", 10), rep("precision", 10), a7[,3])
+preca8 <- data.frame(rep("Alu PE noSplit", 10), rep("precision", 10), a8[,3])
+precs7 <- data.frame(rep("Alu SR", 10), rep("precision", 10), s7[,3])
+
+names(sensg1) <- c("category", "performance", "score")
+names(sensg2) <- c("category", "performance", "score")
+names(sensg3) <- c("category", "performance", "score")
+names(sensg4) <- c("category", "performance", "score")
+names(sensg5) <- c("category", "performance", "score")
+names(sensg6) <- c("category", "performance", "score")
+names(sensg8) <- c("category", "performance", "score")
+names(sensg9) <- c("category", "performance", "score")
+names(senst2) <- c("category", "performance", "score")
+names(senst3) <- c("category", "performance", "score")
+names(sensa7) <- c("category", "performance", "score")
+names(sensa8) <- c("category", "performance", "score")
+names(senss7) <- c("category", "performance", "score")
+
+names(precg1) <- c("category", "performance", "score")
+names(precg2) <- c("category", "performance", "score")
+names(precg3) <- c("category", "performance", "score")
+names(precg4) <- c("category", "performance", "score")
+names(precg5) <- c("category", "performance", "score")
+names(precg6) <- c("category", "performance", "score")
+names(precg8) <- c("category", "performance", "score")
+names(precg9) <- c("category", "performance", "score")
+names(prect2) <- c("category", "performance", "score")
+names(prect3) <- c("category", "performance", "score")
+names(preca7) <- c("category", "performance", "score")
+names(preca8) <- c("category", "performance", "score")
+names(precs7) <- c("category", "performance", "score")
+
+platinum <- rbind(sensg1, sensg2, sensg3, sensg4, sensg5, sensg6, sensg8, sensg9, senst2, senst3, sensa7, sensa8, senss7, precg1, precg2, precg3, precg4, precg5, precg6, precg8, precg9, prect2, prect3, preca7, preca8, precs7)
+errPlat <- summarySE(platinum, measurevar="score", groupvars=c("category","performance"), na.rm=TRUE)
+
+ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+        geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
+                  size=1,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Modeling subgroup") +
+    ylab("Performance score") +
+    theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=20,face="bold"),
+        axis.text.x=element_text(angle=30, hjust=1)) +
+    theme(legend.title=element_text(size=16),
+        legend.text=element_text(size=14))
+ggsave("/home/xwzhu/levinson/MEI_plots/test_performance_316noMDA.pdf", useDingbats=FALSE, width=20, height=7)
+
+### 316 MDA ###
+g1 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G1.txt", sep=" ", header=F)
+g2 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G2.txt", sep=" ", header=F)
+g3 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G3.txt", sep=" ", header=F)
+g4 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G4.txt", sep=" ", header=F)
+g5 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G5.txt", sep=" ", header=F)
+g6 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G6.txt", sep=" ", header=F)
+g8 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G8.txt", sep=" ", header=F)
+g9 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.G9.txt", sep=" ", header=F)
+t2 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.T2.txt", sep=" ", header=F)
+t3 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF41/MDA/LINE.T3.txt", sep=" ", header=F)
+a7 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF42/MDA/ALU.A7.txt", sep=" ", header=F)
+a8 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF42/MDA/ALU.A8.txt", sep=" ", header=F)
+s7 <- read.table("/home/xwzhu/transfer/Project_VAC_11092_B01_GRM_WGS.2015-09-20/hg38/RF42/MDA/ALU.T7.txt", sep=" ", header=F)
+
+platinum <- c()
+sensg1 <- data.frame(rep("L1PE ACAG", 5), rep("sensitivity", 5), g1[,2])
+sensg2 <- data.frame(rep("L1PE TAG", 5), rep("sensitivity", 5), g2[,2])
+sensg3 <- data.frame(rep("L1PE ORF", 5), rep("sensitivity", 5), g3[,2])
+sensg4 <- data.frame(rep("L1PE rest", 5), rep("sensitivity", 5), g4[,2])
+sensg5 <- data.frame(rep("L1PE GC5389", 5), rep("sensitivity", 5), g5[,2])
+sensg6 <- data.frame(rep("L1PE 5533", 5), rep("sensitivity", 5), g6[,2])
+sensg8 <- data.frame(rep("L1PE AT5710", 5), rep("sensitivity", 5), g8[,2])
+sensg9 <- data.frame(rep("L1PE SpltAnch", 5), rep("sensitivity", 5), g9[,2])
+senst2 <- data.frame(rep("L1PE SR old", 5), rep("sensitivity", 5), t2[,2])
+senst3 <- data.frame(rep("L1PE SR new", 5), rep("sensitivity", 5), t3[,2])
+sensa7 <- data.frame(rep("Alu PE SpltAnch", 5), rep("sensitivity", 5), a7[,2])
+sensa8 <- data.frame(rep("Alu PE noSplit", 5), rep("sensitivity", 5), a8[,2])
+senss7 <- data.frame(rep("Alu SR", 5), rep("sensitivity", 5), s7[,2])
+
+precg1 <- data.frame(rep("L1PE ACAG", 5), rep("precision", 5), g1[,3])
+precg2 <- data.frame(rep("L1PE TAG", 5), rep("precision", 5), g2[,3])
+precg3 <- data.frame(rep("L1PE ORF", 5), rep("precision", 5), g3[,3])
+precg4 <- data.frame(rep("L1PE rest", 5), rep("precision", 5), g4[,3])
+precg5 <- data.frame(rep("L1PE GC5389", 5), rep("precision", 5), g5[,3])
+precg6 <- data.frame(rep("L1PE 5533", 5), rep("precision", 5), g6[,3])
+precg8 <- data.frame(rep("L1PE AT5710", 5), rep("precision", 5), g8[,3])
+precg9 <- data.frame(rep("L1PE SpltAnch", 5), rep("precision", 5), g9[,3])
+prect2 <- data.frame(rep("L1PE SR old", 5), rep("precision", 5), t2[,3])
+prect3 <- data.frame(rep("L1PE SR new", 5), rep("precision", 5), t3[,3])
+preca7 <- data.frame(rep("Alu PE SpltAnch", 5), rep("precision", 5), a7[,3])
+preca8 <- data.frame(rep("Alu PE noSplit", 5), rep("precision", 5), a8[,3])
+precs7 <- data.frame(rep("Alu SR", 5), rep("precision", 5), s7[,3])
+
+names(sensg1) <- c("category", "performance", "score")
+names(sensg2) <- c("category", "performance", "score")
+names(sensg3) <- c("category", "performance", "score")
+names(sensg4) <- c("category", "performance", "score")
+names(sensg5) <- c("category", "performance", "score")
+names(sensg6) <- c("category", "performance", "score")
+names(sensg8) <- c("category", "performance", "score")
+names(sensg9) <- c("category", "performance", "score")
+names(senst2) <- c("category", "performance", "score")
+names(senst3) <- c("category", "performance", "score")
+names(sensa7) <- c("category", "performance", "score")
+names(sensa8) <- c("category", "performance", "score")
+names(senss7) <- c("category", "performance", "score")
+
+names(precg1) <- c("category", "performance", "score")
+names(precg2) <- c("category", "performance", "score")
+names(precg3) <- c("category", "performance", "score")
+names(precg4) <- c("category", "performance", "score")
+names(precg5) <- c("category", "performance", "score")
+names(precg6) <- c("category", "performance", "score")
+names(precg8) <- c("category", "performance", "score")
+names(precg9) <- c("category", "performance", "score")
+names(prect2) <- c("category", "performance", "score")
+names(prect3) <- c("category", "performance", "score")
+names(preca7) <- c("category", "performance", "score")
+names(preca8) <- c("category", "performance", "score")
+names(precs7) <- c("category", "performance", "score")
+
+platinum <- rbind(sensg1, sensg2, sensg3, sensg4, sensg5, sensg6, sensg8, sensg9, senst2, senst3, sensa7, sensa8, senss7, precg1, precg2, precg3, precg4, precg5, precg6, precg8, precg9, prect2, prect3, preca7, preca8, precs7)
+errPlat <- summarySE(platinum, measurevar="score", groupvars=c("category","performance"), na.rm=TRUE)
+
+ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
+        geom_bar(position=position_dodge(), stat="identity",
+         colour="black", # Use black outlines,
+         size=.3) +      # Thinner lines+
+        geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
+                  size=1,    # Thinner lines
+                  width=.2,
+                  position=position_dodge(.9)) +
+    xlab("Modeling subgroup") +
+    ylab("Performance score") +
+    theme(axis.text=element_text(size=16),
+        axis.title=element_text(size=20,face="bold"),
+        axis.text.x=element_text(angle=30, hjust=1)) +
+    theme(legend.title=element_text(size=16),
+        legend.text=element_text(size=14))
+ggsave("/home/xwzhu/levinson/MEI_plots/test_performance_316MDA.pdf", useDingbats=FALSE, width=20, height=7)
