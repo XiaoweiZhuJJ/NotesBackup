@@ -117,7 +117,7 @@ ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
          colour="black", # Use black outlines,
          size=.3) +      # Thinner lines+
         geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
-                  size=1,    # Thinner lines
+                  size=.3,    # Thinner lines
                   width=.2,
                   position=position_dodge(.9)) +
     xlab("Modeling subgroup") +
@@ -209,7 +209,7 @@ ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
          colour="black", # Use black outlines,
          size=.3) +      # Thinner lines+
         geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
-                  size=1,    # Thinner lines
+                  size=.3,    # Thinner lines
                   width=.2,
                   position=position_dodge(.9)) +
     xlab("Modeling subgroup") +
@@ -301,7 +301,7 @@ ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
          colour="black", # Use black outlines,
          size=.3) +      # Thinner lines+
         geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
-                  size=1,    # Thinner lines
+                  size=.3,    # Thinner lines
                   width=.2,
                   position=position_dodge(.9)) +
     xlab("Modeling subgroup") +
@@ -393,7 +393,7 @@ ggplot(errPlat, aes(x=category, y=score, fill=performance)) +
          colour="black", # Use black outlines,
          size=.3) +      # Thinner lines+
         geom_errorbar(aes(ymin=score-ci, ymax=score+ci),
-                  size=1,    # Thinner lines
+                  size=.3,    # Thinner lines
                   width=.2,
                   position=position_dodge(.9)) +
     xlab("Modeling subgroup") +
